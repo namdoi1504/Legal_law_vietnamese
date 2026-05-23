@@ -4,62 +4,135 @@ import httpx
 
 API_URL = "http://localhost:8000"
 
-st.set_page_config(page_title="Trợ lý Pháp luật VN", layout="wide")
+st.set_page_config(page_title="⚖️ Trợ lý Pháp luật VN", layout="wide")
 st.title("⚖️ Trợ lý Pháp luật Việt Nam")
 
-# Domain selector — chuẩn bị cho multi-domain sau
-domain = st.sidebar.selectbox(
-    "Chọn lĩnh vực pháp luật",
-    ["Tất cả", "labor", "civil", "criminal", "traffic"],
-    index=0
-)
+tab1, tab2 = st.tabs(["💬 Hỏi đáp pháp luật", "📄 Kiểm tra văn bản / Hợp đồng"])
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+# ── Tab 1: Chat thường ──────────────────────────────────────
+with tab1:
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
 
-# Display chat history
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
-        if msg.get("citations"):
-            with st.expander("📚 Căn cứ pháp lý"):
-                for c in msg["citations"]:
-                    st.markdown(f"- {c}")
+    # Hiển thị lịch sử chat
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+            citations = msg.get("citations", [])
+            if citations and isinstance(citations, list) and len(citations) > 0:
+                with st.expander("📚 Căn cứ pháp lý"):
+                    for c in citations:
+                        st.markdown(f"- {c}")
 
-# Input
-if prompt := st.chat_input("Nhập câu hỏi pháp luật..."):
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    if prompt := st.chat_input("Nhập câu hỏi pháp luật..."):
+        # Hiển thị câu hỏi
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
 
-    with st.chat_message("user"):
-        st.markdown(prompt)
+        # Gọi API
+        with st.chat_message("assistant"):
+            with st.spinner("Đang tra cứu..."):
+                try:
+                    resp = httpx.post(
+                        f"{API_URL}/chat",
+                        json={"query": prompt, "domain": None},
+                        timeout=60
+                    )
 
-    with st.chat_message("assistant"):
-        with st.spinner("Đang tra cứu..."):
-            try:
-                resp = httpx.post(
-                    f"{API_URL}/chat",
-                    json={
-                        "query": prompt,
-                        "domain": None if domain == "Tất cả" else domain
-                    },
-                    timeout=60
-                )
-                data = resp.json()
+                    if resp.status_code != 200:
+                        st.error(f"Lỗi API {resp.status_code}: {resp.text}")
+                    else:
+                        data = resp.json()
+                        answer = data.get("answer", "Không có câu trả lời")
+                        citations = data.get("citations", [])
+                        latency = data.get("latency_ms", 0)
 
-                st.markdown(data["answer"])
+                        st.markdown(answer)
 
-                if data["citations"]:
-                    with st.expander("📚 Căn cứ pháp lý"):
-                        for c in data["citations"]:
-                            st.markdown(f"- {c}")
+                        if isinstance(citations, list) and len(citations) > 0:
+                            with st.expander("📚 Căn cứ pháp lý"):
+                                for c in citations:
+                                    st.markdown(f"- {c}")
 
-                st.caption(f"⏱ {data['latency_ms']:.0f}ms | 📄 {data['chunks_used']} điều luật")
+                        st.caption(f"⏱ {latency:.0f}ms")
 
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": data["answer"],
-                    "citations": data["citations"]
-                })
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": answer,
+                            "citations": citations if isinstance(citations, list) else []
+                        })
 
-            except Exception as e:
-                st.error(f"Lỗi: {e}")
+                except httpx.TimeoutException:
+                    st.error("Timeout — thử lại sau.")
+                except Exception as e:
+                    st.error(f"Lỗi kết nối: {e}")
+
+# ── Tab 2: Kiểm tra văn bản ─────────────────────────────────
+with tab2:
+    st.subheader("📄 Kiểm tra hợp đồng / văn bản pháp lý")
+    st.caption(
+        "Upload tối đa 3 file PDF hoặc Word — "
+        "AI sẽ phát hiện điều khoản vi phạm pháp luật lao động Việt Nam."
+    )
+
+    uploaded_files = st.file_uploader(
+        "Chọn file (PDF hoặc Word)",
+        type=["pdf", "docx", "doc"],
+        accept_multiple_files=True,
+        help="Tối đa 3 file"
+    )
+
+    question = st.text_area(
+        "Câu hỏi cụ thể (không bắt buộc)",
+        placeholder=(
+            "Ví dụ: Điều khoản thời gian báo trước có đúng luật không?\n"
+            "Nếu để trống, AI sẽ tự kiểm tra toàn bộ văn bản."
+        ),
+        height=80
+    )
+
+    if st.button("🔍 Kiểm tra", type="primary"):
+        if not uploaded_files:
+            st.warning("Vui lòng upload ít nhất 1 file")
+        elif len(uploaded_files) > 3:
+            st.error("Tối đa 3 file")
+        else:
+            with st.spinner("Đang phân tích văn bản và đối chiếu pháp luật..."):
+                try:
+                    files = [
+                        ("files", (f.name, f.read(), f.type or "application/octet-stream"))
+                        for f in uploaded_files
+                    ]
+                    data = {}
+                    if question.strip():
+                        data["question"] = question.strip()
+
+                    resp = httpx.post(
+                        f"{API_URL}/analyze-document",
+                        files=files,
+                        data=data,
+                        timeout=120
+                    )
+
+                    if resp.status_code != 200:
+                        st.error(f"Lỗi API {resp.status_code}: {resp.json().get('detail', resp.text)}")
+                    else:
+                        result = resp.json()
+                        answer = result.get("answer", "")
+                        citations = result.get("citations", [])
+                        latency = result.get("latency_ms", 0)
+                        files_analyzed = result.get("files_analyzed", [])
+
+                        st.success(f"Đã phân tích {len(files_analyzed)} file trong {latency:.0f}ms")
+                        st.markdown(answer)
+
+                        if isinstance(citations, list) and len(citations) > 0:
+                            with st.expander("📚 Điều luật đã tham chiếu"):
+                                for c in citations:
+                                    st.markdown(f"- {c}")
+
+                except httpx.TimeoutException:
+                    st.error("Timeout — file quá lớn hoặc server chậm. Thử lại.")
+                except Exception as e:
+                    st.error(f"Lỗi kết nối: {e}")
