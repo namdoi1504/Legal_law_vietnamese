@@ -76,7 +76,7 @@ async def chat(req: QueryRequest):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "model": "qwen2.5:7b"}
+    return {"status": "ok", "model": "llama-3.1-8b-instant"}
 
 
 @app.get("/domains")

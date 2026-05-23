@@ -1,8 +1,10 @@
+# src/llm/ollama_client.py
 import httpx
+from src.llm.base_client import BaseLLMClient
 from configs.settings import settings
 
 
-class OllamaClient:
+class OllamaClient(BaseLLMClient):
     def __init__(self):
         self.base_url = settings.OLLAMA_BASE_URL
         self.model = settings.LLM_MODEL
@@ -22,8 +24,8 @@ class OllamaClient:
             ],
             "options": {
                 "temperature": temperature,
-                "num_ctx": 4096,      # context window
-                "num_predict": 1024,  # max output tokens
+                "num_ctx": 4096,
+                "num_predict": 1024,
             },
             "stream": stream
         }
@@ -39,11 +41,3 @@ class OllamaClient:
             resp.raise_for_status()
 
         return resp.json()["message"]["content"]
-
-    def is_available(self) -> bool:
-        try:
-            with httpx.Client(timeout=5) as client:
-                resp = client.get(f"{self.base_url}/api/tags")
-            return resp.status_code == 200
-        except Exception:
-            return False

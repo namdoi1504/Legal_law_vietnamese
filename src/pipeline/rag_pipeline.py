@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from src.retriever.hybrid_retriever import HybridRetriever
 from src.reranker.bge_reranker import BGEReranker
-from src.llm.ollama_client import OllamaClient
+from src.llm.factory import get_llm_client
 from src.pipeline.prompts import LEGAL_SYSTEM_PROMPT, build_user_prompt
 
 
@@ -21,7 +21,7 @@ class LegalRAGPipeline:
         print("Loading reranker...")
         self.reranker = BGEReranker()
         print("Loading LLM...")
-        self.llm = OllamaClient()
+        self.llm = get_llm_client()
         print("Pipeline ready.")
 
     def run(self, query: str, domain: str = None) -> RAGResult:
