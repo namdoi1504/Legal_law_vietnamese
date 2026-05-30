@@ -20,17 +20,66 @@ class HybridRetriever:
     ) -> list[dict]:
         top_k = top_k or settings.TOP_K_VECTOR
 
-        # Vector search
+        # Fetch nhieu hon tu moi nguon de RRF co pool du rong
+        fetch_k = top_k + 15  # e.g. top_k=20 -> fetch 35 moi nguon
+
+        # Tao expanded query de cai thien recall
+        expanded_query = self._expand_query(query)
+
+        # Vector search - dung ca query goc lan expanded neu khac nhau
         query_vec = self.embedder.embed_single(query)
         vector_results = self.vector_store.search(
-            query_vec, top_k=top_k, domain_filter=domain
+            query_vec, top_k=fetch_k, domain_filter=domain
         )
 
-        # BM25 search
-        bm25_results = self.bm25.search(query, top_k=top_k)
+        if expanded_query and expanded_query != query:
+            expanded_vec = self.embedder.embed_single(expanded_query)
+            expanded_vector = self.vector_store.search(
+                expanded_vec, top_k=fetch_k // 2, domain_filter=domain
+            )
+            # Merge ket qua expanded vao vector_results
+            seen_ids = {self._get_chunk_id(r) for r in vector_results}
+            for r in expanded_vector:
+                if self._get_chunk_id(r) not in seen_ids:
+                    vector_results.append(r)
 
-        # Reciprocal Rank Fusion
+        # BM25 search - dung expanded query
+        bm25_query = expanded_query if (expanded_query and expanded_query != query) else query
+        bm25_results = self.bm25.search(bm25_query, top_k=fetch_k)
+
+        # Reciprocal Rank Fusion -> tra ve top_k cho reranker
         return self._rrf_merge(vector_results, bm25_results, top_k)
+
+    def _get_chunk_id(self, item: dict) -> str:
+        return item["metadata"].get("chunk_id", item["content"][:50])
+
+    def _expand_query(self, query: str) -> str:
+        """Mo rong query de cai thien recall cho cac truong hop dac biet"""
+        if not query:
+            return query
+        q_lower = query.lower()
+
+        # Truy van phu dinh "khong duoc don phuong cham dut"
+        # -> them cac truong hop cu the trong Dieu 37
+        if "kh\u00f4ng \u0111\u01b0\u1ee3c" in q_lower and (
+            "\u0111\u01a1n ph\u01b0\u01a1ng" in q_lower or "ch\u1ea5m d\u1ee9t" in q_lower
+        ):
+            return (query + " \u1ed1m \u0111au thai s\u1ea3n b\u1ec7nh ngh\u1ec1 nghi\u1ec7p"
+                    " tai n\u1ea1n lao \u0111\u1ed9ng c\u1ea5m ch\u1ea5m d\u1ee9t")
+
+        # Hinh thuc ky luat -> them cac hinh thuc cu the (Dieu 124)
+        if "h\u00ecnh th\u1ee9c" in q_lower and "k\u1ef7 lu\u1eadt" in q_lower:
+            return (query + " khi\u1ec3n tr\u00e1ch c\u1ea3nh c\u00e1o sa th\u1ea3i"
+                    " k\u00e9o d\u00e0i n\u00e2ng l\u01b0\u01a1ng")
+
+        # Sa thai khi nao -> them tu khoa noi dung Dieu 125
+        if "sa th\u1ea3i" in q_lower and (
+            "khi n\u00e0o" in q_lower or "\u00e1p d\u1ee5ng" in q_lower
+        ):
+            return (query + " tr\u1ed9m c\u1eafp tham \u00f4 \u0111\u00e1nh b\u1ea1c"
+                    " ma t\u00fay ti\u1ebft l\u1ed9 b\u00ed m\u1eadt")
+
+        return query
 
     def _rrf_merge(
             self,

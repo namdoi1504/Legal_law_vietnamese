@@ -15,9 +15,9 @@ class Settings(BaseSettings):
     VECTOR_SIZE: int = 1024
 
     # Retrieval
-    TOP_K_VECTOR: int = 10
-    TOP_K_BM25: int = 10
-    TOP_K_RERANK: int = 5
+    TOP_K_VECTOR: int = 20
+    TOP_K_BM25: int = 20
+    TOP_K_RERANK: int = 8
 
     # Reranker
     RERANKER_MODEL: str = "BAAI/bge-reranker-v2-m3"
@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
     # Groq
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.1-8b-instant"
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
     # Gemini
     GEMINI_API_KEY: str = ""

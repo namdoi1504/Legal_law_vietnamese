@@ -8,12 +8,12 @@ from bs4 import BeautifulSoup
 
 @dataclass
 class LegalChunk:
-    chunk_id: str  # "labor_2019_dieu_90"
-    article_number: str  # "90"
-    article_title: str  # "Tiền lương"
-    clause_number: Optional[str]  # "1", "2", None
+    chunk_id: str
+    article_number: str
+    article_title: str
+    clause_number: Optional[str]
     content: str
-    embed_text: str  # text thực sự đưa vào embedding
+    embed_text: str
     metadata: dict
 
 
@@ -22,13 +22,16 @@ class LaborLawParser:
     LAW_YEAR = 2019
     LAW_DOMAIN = "labor"
 
-    # Pattern cứng cho Điều luật VN
     ARTICLE_PATTERN = re.compile(
         r"Điều\s+(\d+)\.\s*(.*?)(?=\nĐiều\s+\d+\.|$)",
         re.DOTALL
     )
     CLAUSE_PATTERN = re.compile(
         r"(\d+)\.\s+(.*?)(?=\n\d+\.\s+|\Z)",
+        re.DOTALL
+    )
+    POINT_PATTERN = re.compile(
+        r"([a-z]\))\s+(.*?)(?=\n[a-z]\)\s+|\Z)",
         re.DOTALL
     )
     CHAPTER_PATTERN = re.compile(
@@ -38,17 +41,14 @@ class LaborLawParser:
 
     def parse_html(self, html: str) -> list[LegalChunk]:
         soup = BeautifulSoup(html, "html.parser")
-        # Lấy phần body text, loại bỏ nav/footer
-        main_content = soup.find("div", class_="content1")  # tuỳ site
+        main_content = soup.find("div", class_="content1")
         if not main_content:
             main_content = soup.get_text()
         else:
             main_content = main_content.get_text()
-
         return self.parse_text(self._clean_raw_text(main_content))
 
     def _clean_raw_text(self, text: str) -> str:
-        # Normalize whitespace nhưng giữ newline để detect structure
         text = re.sub(r"\r\n", "\n", text)
         text = re.sub(r"\n{3,}", "\n\n", text)
         text = re.sub(r"[ \t]+", " ", text)
@@ -63,61 +63,69 @@ class LaborLawParser:
             article_title = match.group(2).split("\n")[0].strip()
             article_body = match.group(2)
 
-            # Tìm chapter context (scan ngược)
             pos = match.start()
             chapter_match = self._find_chapter_at_pos(text, pos)
             if chapter_match:
                 current_chapter = chapter_match
 
-            # Quyết định: chunk theo Điều hay tách Khoản
-            token_estimate = len(article_body.split())
+            # Luôn thử tách theo Khoản
+            clause_chunks = self._split_by_clause(
+                article_num, article_title,
+                article_body, current_chapter
+            )
 
-            if token_estimate > 400:
-                # Tách theo khoản
-                clause_chunks = self._split_by_clause(
-                    article_num, article_title,
-                    article_body, current_chapter
-                )
+            if len(clause_chunks) > 1:
                 chunks.extend(clause_chunks)
             else:
-                chunk = self._make_chunk(
+                chunks.append(self._make_chunk(
                     article_num, article_title,
                     article_body.strip(), current_chapter
-                )
-                chunks.append(chunk)
+                ))
 
         return chunks
 
     def _split_by_clause(
-            self, article_num, article_title,
-            body, chapter
+        self, article_num, article_title,
+        body, chapter
     ) -> list[LegalChunk]:
         chunks = []
         clauses = self.CLAUSE_PATTERN.findall(body)
 
         if not clauses:
-            # Không split được, trả về nguyên Điều
             return [self._make_chunk(article_num, article_title, body, chapter)]
 
         for clause_num, clause_content in clauses:
-            chunk = self._make_chunk(
-                article_num, article_title,
-                clause_content.strip(), chapter,
-                clause_number=clause_num
-            )
-            chunks.append(chunk)
+            # Thử tách theo Điểm (a, b, c) bên trong Khoản
+            points = self.POINT_PATTERN.findall(clause_content)
+
+            if len(points) > 1:
+                # Có nhiều điểm → tách theo Điểm
+                for point_label, point_content in points:
+                    chunk = self._make_chunk(
+                        article_num, article_title,
+                        point_content.strip(), chapter,
+                        clause_number=f"{clause_num}{point_label}"
+                    )
+                    chunks.append(chunk)
+            else:
+                # Không có điểm → giữ nguyên Khoản
+                chunk = self._make_chunk(
+                    article_num, article_title,
+                    clause_content.strip(), chapter,
+                    clause_number=clause_num
+                )
+                chunks.append(chunk)
 
         return chunks
 
     def _make_chunk(
-            self, article_num, article_title,
-            content, chapter, clause_number=None
+        self, article_num, article_title,
+        content, chapter, clause_number=None
     ) -> LegalChunk:
         chunk_id = f"labor_2019_dieu_{article_num}"
         if clause_number:
             chunk_id += f"_khoan_{clause_number}"
 
-        # Embed text = context đầy đủ, không chỉ content
         if clause_number:
             embed_text = (
                 f"{self.LAW_NAME} {self.LAW_YEAR} - {chapter}\n"

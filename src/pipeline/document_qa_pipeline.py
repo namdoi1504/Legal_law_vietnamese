@@ -5,32 +5,32 @@ from src.reranker.bge_reranker import BGEReranker
 from src.llm.factory import get_llm_client
 from src.parser.document_reader import DocumentReader
 
-DOCUMENT_QA_SYSTEM_PROMPT = """Bạn là chuyên gia pháp luật lao động Việt Nam.
+DOCUMENT_QA_SYSTEM_PROMPT = """Ban la chuyen gia phap luat lao dong Viet Nam.
 
-NHIỆM VỤ:
-- Đọc kỹ văn bản người dùng cung cấp
-- Đối chiếu từng điều khoản với quy định pháp luật trong CONTEXT
-- Phát hiện điều khoản SAI hoặc KHÔNG PHÙ HỢP với pháp luật Việt Nam
-- Giải thích rõ tại sao sai và quy định đúng là gì
+NHIEM VU:
+- Doc ky van ban nguoi dung cung cap
+- Doi chieu tung dieu khoan voi quy dinh phap luat trong CONTEXT
+- Phat hien dieu khoan SAI hoac KHONG PHU HOP voi phap luat Viet Nam
+- Giai thich ro tai sao sai va quy dinh dung la gi
 
-QUY TẮC BẮT BUỘC:
-1. Chỉ dựa vào CONTEXT pháp luật được cung cấp để đánh giá
-2. Nếu không tìm thấy căn cứ pháp lý trong context → nói rõ "Không tìm thấy quy định liên quan trong dữ liệu hiện có"
-3. KHÔNG được bịa đặt hoặc suy diễn ngoài context
-4. Trích dẫn điều luật cụ thể khi chỉ ra lỗi hoặc xác nhận đúng
-5. Trả lời bằng tiếng Việt, rõ ràng, có cấu trúc
+QUY TAC BAT BUOC:
+1. Chi dua vao CONTEXT phap luat duoc cung cap de danh gia
+2. Neu khong tim thay can cu phap ly trong context -> noi ro "Khong tim thay quy dinh lien quan trong du lieu hien co"
+3. KHONG duoc bia dat hoac suy dien ngoai context
+4. Trich dan dieu luat cu the khi chi ra loi hoac xac nhan dung
+5. Tra loi bang tieng Viet, ro rang, co cau truc
 
-ĐỊNH DẠNG TRẢ LỜI BẮT BUỘC:
-## Kết quả kiểm tra
+DINH DANG TRA LOI BAT BUOC:
+## Ket qua kiem tra
 
-✅ **Điều khoản hợp lệ:**
-- [liệt kê điều khoản đúng + căn cứ pháp lý]
+OK **Dieu khoan hop le:**
+- [liet ke dieu khoan dung + can cu phap ly]
 
-❌ **Điều khoản vi phạm:**
-- [điều khoản sai] → [giải thích] → Căn cứ: [Điều X - Tên luật]
+FAIL **Dieu khoan vi pham:**
+- [dieu khoan sai] -> [giai thich] -> Can cu: [Dieu X - Ten luat]
 
-⚠️ **Không đủ căn cứ để đánh giá:**
-- [liệt kê nếu có]
+? **Khong du can cu de danh gia:**
+- [liet ke neu co]
 """
 
 
@@ -55,7 +55,7 @@ class DocumentQAPipeline:
         user_question: str = None
     ) -> DocumentQAResult:
 
-        # 1. Extract text từ tất cả file
+        # 1. Extract text tu tat ca file
         all_texts = []
         for file_bytes, filename in file_bytes_list:
             try:
@@ -64,26 +64,37 @@ class DocumentQAPipeline:
             except Exception as e:
                 return DocumentQAResult(
                     answer="",
-                    error=f"Không thể đọc file {filename}: {str(e)}"
+                    error=f"Khong the doc file {filename}: {str(e)}"
                 )
 
         combined_doc = "\n\n".join(all_texts)
 
-        # Giới hạn để không overflow context window
+        # Gioi han de khong overflow context window
         if len(combined_doc) > 6000:
-            combined_doc = combined_doc[:6000] + "\n...[nội dung còn lại đã rút gọn]"
+            combined_doc = combined_doc[:6000] + "\n...[noi dung con lai da rut gon]"
 
-        # 2. Tạo retrieval query
-        # Ưu tiên câu hỏi của user, nếu không có thì dùng nội dung file
-        retrieval_query = user_question if user_question else combined_doc[:300]
+        # 2. Tao retrieval query
+        # Uu tien cau hoi cua user, neu khong co thi tao query co cau truc
+        if user_question:
+            retrieval_query = user_question
+        else:
+            # Tao query phap ly co cau truc thay vi dung raw text
+            doc_preview = combined_doc.strip()
+            # Bo cac dong qua ngan (thuong la header/so trang)
+            meaningful_lines = [
+                line for line in doc_preview.split("\n")
+                if len(line.strip()) > 20
+            ]
+            core_text = " ".join(meaningful_lines[:10])[:400]
+            retrieval_query = f"kiem tra vi pham phap luat lao dong hop dong lao dong {core_text}"
 
-        # 3. Retrieve + Rerank điều luật liên quan
-        candidates = self.retriever.retrieve(retrieval_query, top_k=15)
+        # 3. Retrieve + Rerank dieu luat lien quan
+        candidates = self.retriever.retrieve(retrieval_query, top_k=20)
         final_chunks = self.reranker.rerank(retrieval_query, candidates, top_k=8)
 
         if not final_chunks:
             return DocumentQAResult(
-                answer="Không tìm thấy quy định pháp luật liên quan trong dữ liệu hiện có để đánh giá văn bản này.",
+                answer="Khong tim thay quy dinh phap luat lien quan trong du lieu hien co de danh gia van ban nay.",
                 citations=[],
                 retrieved_chunks=[]
             )
@@ -91,20 +102,20 @@ class DocumentQAPipeline:
         # 4. Build prompt
         law_context = self._build_law_context(final_chunks)
 
-        user_prompt = f"""VĂN BẢN CẦN KIỂM TRA:
+        user_prompt = f"""VAN BAN CAN KIEM TRA:
 {combined_doc}
 
-QUY ĐỊNH PHÁP LUẬT LIÊN QUAN:
+QUY DINH PHAP LUAT LIEN QUAN:
 {law_context}
 
-YÊU CẦU: {user_question if user_question else "Kiểm tra toàn bộ văn bản, phát hiện điều khoản vi phạm pháp luật lao động Việt Nam."}
+YEU CAU: {user_question if user_question else "Kiem tra toan bo van ban, phat hien dieu khoan vi pham phap luat lao dong Viet Nam."}
 """
 
         # 5. Generate
         answer = self.llm.chat(
             system_prompt=DOCUMENT_QA_SYSTEM_PROMPT,
             user_message=user_prompt,
-            temperature=0.1  # Thấp để tránh hallucination
+            temperature=0.1
         )
 
         citations = [

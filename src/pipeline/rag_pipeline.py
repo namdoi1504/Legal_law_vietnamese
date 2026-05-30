@@ -32,9 +32,11 @@ class LegalRAGPipeline:
         final_chunks = self.reranker.rerank(query, candidates)
 
         # 3. Hallucination guard
-        if not final_chunks or final_chunks[0].get("rerank_score", 0) < 0.1:
+        # BGE reranker tra ve raw logit (co the am), khong phai probability
+        # Chi reject khi score cuc ky thap (< -10) hoac khong co ket qua
+        if not final_chunks or final_chunks[0].get("rerank_score", -99) < -10:
             return RAGResult(
-                answer="Tôi không tìm thấy thông tin liên quan trong dữ liệu pháp luật hiện có.",
+                answer="Toi khong tim thay thong tin lien quan trong du lieu phap luat hien co.",
                 retrieved_chunks=candidates,
                 reranked_chunks=final_chunks,
                 citations=[]
