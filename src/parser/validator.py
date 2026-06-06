@@ -1,4 +1,4 @@
-# Chạy kiểm tra chất lượng parse
+# validate chunk parse
 def validate_chunks(chunks):
     issues = []
     for c in chunks:

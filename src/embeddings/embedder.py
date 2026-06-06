@@ -9,7 +9,7 @@ class LegalEmbedder:
         print(f"Loading embedding model: {settings.EMBED_MODEL}")
         self.model = SentenceTransformer(
             settings.EMBED_MODEL,
-            device="cpu"  # Đổi "cuda" nếu có GPU
+            device="cpu"  # change to cuda if GPU is available
         )
 
     def embed_single(self, text: str) -> list[float]:

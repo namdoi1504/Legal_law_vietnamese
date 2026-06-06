@@ -34,7 +34,7 @@ ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc"}
 MAX_FILES = 3
 
 
-# === Chat thường ===
+# Chat
 class QueryRequest(BaseModel):
     query: str
     domain: Optional[str] = None
@@ -62,13 +62,13 @@ async def chat(req: QueryRequest):
     )
 
 
-# === Kiểm tra văn bản upload ===
+# Check document upload
 @app.post("/analyze-document")
 async def analyze_document(
     files: List[UploadFile] = File(...),
     question: Optional[str] = Form(None)
 ):
-    # Validate số lượng file
+    # Validate total file
     if len(files) > MAX_FILES:
         raise HTTPException(400, f"Tối đa {MAX_FILES} file")
 
@@ -84,7 +84,7 @@ async def analyze_document(
         content = await f.read()
         file_data.append((content, f.filename))
 
-    # Chạy pipeline
+    # run pipeline
     start = time.time()
     result = doc_pipeline.run(file_data, question)
     latency = (time.time() - start) * 1000

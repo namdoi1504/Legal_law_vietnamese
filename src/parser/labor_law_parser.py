@@ -68,7 +68,6 @@ class LaborLawParser:
             if chapter_match:
                 current_chapter = chapter_match
 
-            # Luôn thử tách theo Khoản
             clause_chunks = self._split_by_clause(
                 article_num, article_title,
                 article_body, current_chapter
@@ -95,11 +94,11 @@ class LaborLawParser:
             return [self._make_chunk(article_num, article_title, body, chapter)]
 
         for clause_num, clause_content in clauses:
-            # Thử tách theo Điểm (a, b, c) bên trong Khoản
+            # Break down into points a, b, and c of Clause
             points = self.POINT_PATTERN.findall(clause_content)
 
             if len(points) > 1:
-                # Có nhiều điểm → tách theo Điểm
+                # Break down into individual points
                 for point_label, point_content in points:
                     chunk = self._make_chunk(
                         article_num, article_title,
@@ -108,7 +107,6 @@ class LaborLawParser:
                     )
                     chunks.append(chunk)
             else:
-                # Không có điểm → giữ nguyên Khoản
                 chunk = self._make_chunk(
                     article_num, article_title,
                     clause_content.strip(), chapter,

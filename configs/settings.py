@@ -19,11 +19,13 @@ class Settings(BaseSettings):
     TOP_K_BM25: int = 20
     TOP_K_RERANK: int = 8
 
+    # Query Rewriting
+    ENABLE_QUERY_REWRITE: bool = True
+
     # Reranker
     RERANKER_MODEL: str = "BAAI/bge-reranker-v2-m3"
     RERANKER_MIN_SCORE: float = 0.1
 
-    # LLM Provider — đổi ở đây hoặc trong .env
     LLM_PROVIDER: str = "groq"  # "ollama" | "groq" | "gemini"
 
     # Ollama
