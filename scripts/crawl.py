@@ -9,7 +9,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.crawler.base_crawler import LegalCrawler
 
-# URL Bộ luật Lao động 2019 — thay bằng URL thật khi chạy
 LABOR_LAW_URL = "https://thuvienphapluat.vn/van-ban/Lao-dong-Tien-luong/Bo-luat-lao-dong-2019-333670.aspx"
 
 OUTPUT_DIR = "data/raw"

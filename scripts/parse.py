@@ -19,7 +19,7 @@ OUTPUT_PATH = os.path.join(OUTPUT_DIR, "labor_law_2019.json")
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    # Đọc HTML
+    # Read HTML
     print(f"Reading: {INPUT_PATH}")
     with open(INPUT_PATH, "r", encoding="utf-8") as f:
         html = f.read()
@@ -29,12 +29,12 @@ def main():
     print("Parsing...")
     chunks = parser.parse_html(html)
 
-    # Validate — bắt buộc trước khi save
+    # Validate
     print("\n--- Validation Report ---")
     validate_chunks(chunks)
     print("-------------------------\n")
 
-    # Confirm trước khi save nếu có issues
+    # Confirm when saving if there are issues
     parser.save_json(chunks, OUTPUT_PATH)
     print(f"\nDone. Output: {OUTPUT_PATH}")
 

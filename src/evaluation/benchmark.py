@@ -431,7 +431,6 @@ def run_hybrid_benchmark():
     return rate
 
 
-# ── TẬP CÂU HỎI THÔNG TỤC (informal) để đo tác động của Query Rewriting ──
 INFORMAL_BENCHMARK = [
     {"question": "nghỉ đẻ được mấy tháng",                                    "expected_article": "Điều 139", "type": "informal"},
     {"question": "bị đuổi việc oan thì được đền bao nhiêu tiền",               "expected_article": "Điều 41",  "type": "informal"},
@@ -479,7 +478,6 @@ def run_pipeline_benchmark(questions=None):
     for item in dataset:
         q = item["question"]
 
-        # Bước rewrite — giống hệt rag_pipeline.py
         retrieval_query, was_rewritten = rewriter.rewrite(q)
         if was_rewritten:
             rewrite_count += 1

@@ -37,7 +37,7 @@ class OllamaClient(BaseLLMClient):
             )
             if resp.status_code == 500:
                 print(f"Ollama error: {resp.text}")
-                return "Lỗi khi gọi LLM. Vui lòng thử lại."
+                return "Error calling LLM. Please try again."
             resp.raise_for_status()
 
         return resp.json()["message"]["content"]

@@ -2,7 +2,7 @@
 import json
 import pickle
 from rank_bm25 import BM25Okapi
-import underthesea  # tokenize tiếng Việt
+import underthesea
 
 
 class BM25LegalRetriever:
@@ -12,7 +12,7 @@ class BM25LegalRetriever:
 
     def build_index(self, chunks: list[dict]):
         self.chunks = chunks
-        # Tokenize tiếng Việt
+        # Tokenize Vietnamese
         tokenized = [
             underthesea.word_tokenize(c["embed_text"].lower())
             for c in chunks

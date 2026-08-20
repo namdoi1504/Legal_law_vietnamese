@@ -5,7 +5,7 @@ from configs.settings import settings
 
 class BGEReranker:
     def __init__(self):
-        # BGE reranker ho tro tieng Viet tot
+        # BGE reranker support Vietnamese well
         self.model = CrossEncoder("BAAI/bge-reranker-v2-m3")
 
     def rerank(
@@ -16,7 +16,7 @@ class BGEReranker:
     ) -> list[dict]:
         top_k = top_k or settings.TOP_K_RERANK
 
-        # Them article metadata vao input de reranker biet ngu canh dieu luat
+        # Add article metadata into input to reranker 
         pairs = [
             (
                 query,
@@ -33,10 +33,8 @@ class BGEReranker:
         )
 
         results = []
-        # Phase 1: Article diversity — lay chunk tot nhat cua moi dieu luat
-        # Ngan mot dieu luat chiem nhieu slots, day dieu luat khac ra ngoai top_k
         seen_articles = {}
-        overflow = []  # Chunk bi reject vi cung dieu luat da co dai dien
+        overflow = []
         for score, chunk in ranked:
             article = chunk["metadata"].get("article", "")
             if article not in seen_articles:
@@ -49,7 +47,6 @@ class BGEReranker:
                 chunk["rerank_score"] = float(score)
                 overflow.append(chunk)
 
-        # Phase 2: Neu chua du top_k thi fill them tu overflow
         if len(results) < top_k:
             for chunk in overflow:
                 results.append(chunk)

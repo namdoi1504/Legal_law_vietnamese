@@ -2,4 +2,5 @@ data
 .idea
 .venv
 .env
-
+check_chunk.py
+check_article.py

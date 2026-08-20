@@ -16,12 +16,11 @@ def run_ingest(parsed_json_path: str):
 
     print(f"Loaded {len(chunks)} chunks")
 
-    # Embed (dùng embed_text, không phải content)
     embedder = LegalEmbedder()
     texts = [c["embed_text"] for c in chunks]
     embeddings = embedder.embed_batch(texts)
 
-    # Insert vào Qdrant
+    # Insert into Qdrant
     store = LegalVectorStore()
     store.create_collection(recreate=False)
     store.insert_chunks(chunks, embeddings)
