@@ -8,8 +8,7 @@ class LegalEmbedder:
     def __init__(self):
         print(f"Loading embedding model: {settings.EMBED_MODEL}")
         self.model = SentenceTransformer(
-            settings.EMBED_MODEL,
-            device="cpu"  # change to cuda if GPU is available
+            settings.EMBED_MODEL, device=settings.MODEL_DEVICE
         )
 
     def embed_single(self, text: str) -> list[float]:
@@ -21,6 +20,6 @@ class LegalEmbedder:
             texts,
             batch_size=settings.EMBED_BATCH_SIZE,
             normalize_embeddings=True,
-            show_progress_bar=True
+            show_progress_bar=True,
         )
         return vecs.tolist()

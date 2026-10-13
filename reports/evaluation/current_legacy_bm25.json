@@ -1,0 +1,1109 @@
+{
+  "created_at": "2026-10-13T03:28:26.435047+00:00",
+  "mode": "bm25",
+  "python": "3.11.9",
+  "git_revision": "53ebf661ff50796dd402d47ed26ce4eb5b038080",
+  "working_diff_sha256": "fc44c6f25b9036291ce5c09ef98307b9869ec4120d3704b064505ead375662e2",
+  "dataset": "D:\\Admin\\Python\\legal-rag\\data\\evaluation\\legacy.jsonl",
+  "dataset_sha256": "efc46bd7fefc305912d4ec21b1ed9274f8b5e937bf5f65e07b89194a92448d4f",
+  "corpus_version": "6aa05971e2a6bc143a6dea7dcc4b1540d5834bf7dadf0e0b3d3b3fc9f2b5d945",
+  "prompt_version": "grounded-v2",
+  "settings": {
+    "EMBED_MODEL": "BAAI/bge-m3",
+    "RERANKER_MODEL": "BAAI/bge-reranker-v2-m3",
+    "LLM_PROVIDER": "groq",
+    "GROQ_MODEL": "llama-3.3-70b-versatile",
+    "TOP_K_RERANK": 8,
+    "RETRIEVAL_CANDIDATES": 40,
+    "ENABLE_QUERY_REWRITE": true,
+    "RERANKER_MIN_SCORE": -10.0,
+    "RERANK_MAX_PER_ARTICLE": 0,
+    "CONTEXT_TOKEN_BUDGET": 9000
+  },
+  "limitations": [
+    "Labels are not independently reviewed.",
+    "Citation checks verify identity and verbatim quotes, not semantic correctness."
+  ],
+  "cases": [
+    {
+      "id": "legacy-01",
+      "question": "nghỉ đẻ được mấy tháng",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_1",
+          "article": "Điều 139",
+          "clause": "1",
+          "point": null,
+          "score": 8.987735021897384
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_112:khoan_1:diem_c",
+          "article": "Điều 112",
+          "clause": "1",
+          "point": "c",
+          "score": 8.234013181928393
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_115:khoan_1:diem_c",
+          "article": "Điều 115",
+          "clause": "1",
+          "point": "c",
+          "score": 7.731497708070995
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_2",
+          "article": "Điều 113",
+          "clause": "2",
+          "point": null,
+          "score": 7.6910413180659996
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_169:khoan_2",
+          "article": "Điều 169",
+          "clause": "2",
+          "point": null,
+          "score": 7.4454622488232935
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_111:khoan_1",
+          "article": "Điều 111",
+          "clause": "1",
+          "point": null,
+          "score": 7.309059042662081
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_137:khoan_4",
+          "article": "Điều 137",
+          "clause": "4",
+          "point": null,
+          "score": 7.240659632866365
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_112:khoan_1:diem_a",
+          "article": "Điều 112",
+          "clause": "1",
+          "point": "a",
+          "score": 7.19030991816214
+        }
+      ],
+      "latency_ms": 3.44
+    },
+    {
+      "id": "legacy-02",
+      "question": "bị đuổi việc oan thì được đền bao nhiêu tiền",
+      "type": "informal",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_137:khoan_2",
+          "article": "Điều 137",
+          "clause": "2",
+          "point": null,
+          "score": 9.887752691200536
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_3:khoan_8",
+          "article": "Điều 3",
+          "clause": "8",
+          "point": null,
+          "score": 8.538622048363122
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_19:khoan_2",
+          "article": "Điều 19",
+          "clause": "2",
+          "point": null,
+          "score": 8.537646912365053
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_137:khoan_3",
+          "article": "Điều 137",
+          "clause": "3",
+          "point": null,
+          "score": 8.51817404310551
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_21:khoan_2",
+          "article": "Điều 21",
+          "clause": "2",
+          "point": null,
+          "score": 8.290104114409163
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_147:khoan_2:diem_a",
+          "article": "Điều 147",
+          "clause": "2",
+          "point": "a",
+          "score": 7.896242588438733
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_42:khoan_3",
+          "article": "Điều 42",
+          "clause": "3",
+          "point": null,
+          "score": 7.46154410955165
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_129:khoan_1",
+          "article": "Điều 129",
+          "clause": "1",
+          "point": null,
+          "score": 7.385475246205298
+        }
+      ],
+      "latency_ms": 5.0
+    },
+    {
+      "id": "legacy-03",
+      "question": "lương thử việc có được thấp hơn lương chính không",
+      "type": "informal",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_90:khoan_2",
+          "article": "Điều 90",
+          "clause": "2",
+          "point": null,
+          "score": 17.20586522874721
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_29:khoan_3",
+          "article": "Điều 29",
+          "clause": "3",
+          "point": null,
+          "score": 15.59214642687867
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_99:khoan_2",
+          "article": "Điều 99",
+          "clause": "2",
+          "point": null,
+          "score": 14.308243109747385
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_58:khoan_3",
+          "article": "Điều 58",
+          "clause": "3",
+          "point": null,
+          "score": 13.3163779196586
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_99:khoan_3:diem_a",
+          "article": "Điều 99",
+          "clause": "3",
+          "point": "a",
+          "score": 13.103751884369657
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_99:khoan_3:diem_b",
+          "article": "Điều 99",
+          "clause": "3",
+          "point": "b",
+          "score": 12.55991981593899
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_56:khoan_4",
+          "article": "Điều 56",
+          "clause": "4",
+          "point": null,
+          "score": 12.292244373043436
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_219:khoan_1:diem_b",
+          "article": "Điều 219",
+          "clause": "1",
+          "point": "b",
+          "score": 11.920976086251157
+        }
+      ],
+      "latency_ms": 5.14
+    },
+    {
+      "id": "legacy-04",
+      "question": "công ty có được giữ bằng cấp chứng chỉ của nhân viên không",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_17:khoan_1",
+          "article": "Điều 17",
+          "clause": "1",
+          "point": null,
+          "score": 19.288130705989836
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_154:khoan_2",
+          "article": "Điều 154",
+          "clause": "2",
+          "point": null,
+          "score": 15.09864659739862
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_154:khoan_1",
+          "article": "Điều 154",
+          "clause": "1",
+          "point": null,
+          "score": 14.954912193195064
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_30:khoan_1:diem_đ",
+          "article": "Điều 30",
+          "clause": "1",
+          "point": "đ",
+          "score": 14.481703794665666
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_183",
+          "article": "Điều 183",
+          "clause": null,
+          "point": null,
+          "score": 13.67277678719867
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_25:khoan_3",
+          "article": "Điều 25",
+          "clause": "3",
+          "point": null,
+          "score": 12.872187111194183
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_5",
+          "article": "Điều 8",
+          "clause": "5",
+          "point": null,
+          "score": 12.592668110553582
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_74:khoan_3",
+          "article": "Điều 74",
+          "clause": "3",
+          "point": null,
+          "score": 11.57042655382371
+        }
+      ],
+      "latency_ms": 5.75
+    },
+    {
+      "id": "legacy-05",
+      "question": "ký hợp đồng miệng có hợp lệ không",
+      "type": "informal",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_174:khoan_1:diem_d",
+          "article": "Điều 174",
+          "clause": "1",
+          "point": "d",
+          "score": 10.340663190720544
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_174:khoan_1:diem_c",
+          "article": "Điều 174",
+          "clause": "1",
+          "point": "c",
+          "score": 9.060846093806813
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_174:khoan_1:diem_a",
+          "article": "Điều 174",
+          "clause": "1",
+          "point": "a",
+          "score": 8.831037276752912
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_174:khoan_1:diem_đ",
+          "article": "Điều 174",
+          "clause": "1",
+          "point": "đ",
+          "score": 8.655550954152822
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_4",
+          "article": "Điều 188",
+          "clause": "4",
+          "point": null,
+          "score": 8.456785597364426
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_174:khoan_1:diem_g",
+          "article": "Điều 174",
+          "clause": "1",
+          "point": "g",
+          "score": 8.23436139301803
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_174:khoan_1:diem_h",
+          "article": "Điều 174",
+          "clause": "1",
+          "point": "h",
+          "score": 8.137567711016805
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_172:khoan_1",
+          "article": "Điều 172",
+          "clause": "1",
+          "point": null,
+          "score": 8.045535880685883
+        }
+      ],
+      "latency_ms": 4.41
+    },
+    {
+      "id": "legacy-06",
+      "question": "làm 3 năm bị cho nghỉ việc thì nhận được tiền gì",
+      "type": "informal",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_3",
+          "article": "Điều 113",
+          "clause": "3",
+          "point": null,
+          "score": 18.487568548190666
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_6",
+          "article": "Điều 113",
+          "clause": "6",
+          "point": null,
+          "score": 12.982163367781075
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_101:khoan_3",
+          "article": "Điều 101",
+          "clause": "3",
+          "point": null,
+          "score": 12.106290775925311
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_140",
+          "article": "Điều 140",
+          "clause": null,
+          "point": null,
+          "score": 11.991582690032974
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_5",
+          "article": "Điều 113",
+          "clause": "5",
+          "point": null,
+          "score": 11.482001874469782
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_2",
+          "article": "Điều 113",
+          "clause": "2",
+          "point": null,
+          "score": 11.409757616987353
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_114",
+          "article": "Điều 114",
+          "clause": null,
+          "point": null,
+          "score": 11.364749539656499
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_1:diem_a",
+          "article": "Điều 113",
+          "clause": "1",
+          "point": "a",
+          "score": 10.98173010304644
+        }
+      ],
+      "latency_ms": 5.54
+    },
+    {
+      "id": "legacy-07",
+      "question": "bao nhiêu ngày phải báo trước khi tự nghỉ việc",
+      "type": "informal",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_4",
+          "article": "Điều 113",
+          "clause": "4",
+          "point": null,
+          "score": 13.514198587918623
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_140",
+          "article": "Điều 140",
+          "clause": null,
+          "point": null,
+          "score": 12.441326120704128
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_4",
+          "article": "Điều 139",
+          "clause": "4",
+          "point": null,
+          "score": 11.710093063432955
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_1",
+          "article": "Điều 139",
+          "clause": "1",
+          "point": null,
+          "score": 10.87230438218931
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_115:khoan_2",
+          "article": "Điều 115",
+          "clause": "2",
+          "point": null,
+          "score": 10.686970101665294
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_115:khoan_1:diem_a",
+          "article": "Điều 115",
+          "clause": "1",
+          "point": "a",
+          "score": 10.133673372887017
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_38",
+          "article": "Điều 38",
+          "clause": null,
+          "point": null,
+          "score": 10.094084837286916
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_115:khoan_1:diem_b",
+          "article": "Điều 115",
+          "clause": "1",
+          "point": "b",
+          "score": 9.91606406077319
+        }
+      ],
+      "latency_ms": 4.9
+    },
+    {
+      "id": "legacy-08",
+      "question": "đi làm muộn bị trừ lương có đúng luật không",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714575
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_95:khoan_3",
+          "article": "Điều 95",
+          "clause": "3",
+          "point": null,
+          "score": 11.979625901531064
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_102:khoan_1",
+          "article": "Điều 102",
+          "clause": "1",
+          "point": null,
+          "score": 11.667442986272274
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_129:khoan_1",
+          "article": "Điều 129",
+          "clause": "1",
+          "point": null,
+          "score": 10.935938706125004
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_137:khoan_1:diem_b",
+          "article": "Điều 137",
+          "clause": "1",
+          "point": "b",
+          "score": 10.73677682031214
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_3:khoan_6",
+          "article": "Điều 3",
+          "clause": "6",
+          "point": null,
+          "score": 10.71876749401891
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_150:khoan_1",
+          "article": "Điều 150",
+          "clause": "1",
+          "point": null,
+          "score": 10.474132094430484
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_163:khoan_6",
+          "article": "Điều 163",
+          "clause": "6",
+          "point": null,
+          "score": 10.01338283614231
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_70:khoan_3",
+          "article": "Điều 70",
+          "clause": "3",
+          "point": null,
+          "score": 9.951243294887558
+        }
+      ],
+      "latency_ms": 5.33
+    },
+    {
+      "id": "legacy-09",
+      "question": "công ty bắt làm thêm giờ mà không trả thêm tiền thì sao",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_2",
+          "article": "Điều 98",
+          "clause": "2",
+          "point": null,
+          "score": 22.34491576116984
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_3",
+          "article": "Điều 98",
+          "clause": "3",
+          "point": null,
+          "score": 22.024443545468184
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_1:diem_a",
+          "article": "Điều 98",
+          "clause": "1",
+          "point": "a",
+          "score": 21.70022453177356
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_1:diem_b",
+          "article": "Điều 98",
+          "clause": "1",
+          "point": "b",
+          "score": 21.494381082557094
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_108:khoan_1",
+          "article": "Điều 108",
+          "clause": "1",
+          "point": null,
+          "score": 19.932145352946712
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_1:diem_c",
+          "article": "Điều 98",
+          "clause": "1",
+          "point": "c",
+          "score": 19.478731896864765
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_2:diem_b",
+          "article": "Điều 107",
+          "clause": "2",
+          "point": "b",
+          "score": 19.192622203679413
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_3:diem_c",
+          "article": "Điều 107",
+          "clause": "3",
+          "point": "c",
+          "score": 18.90920776458627
+        }
+      ],
+      "latency_ms": 8.01
+    },
+    {
+      "id": "legacy-10",
+      "question": "đang mang thai có bị sa thải được không",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_137:khoan_3",
+          "article": "Điều 137",
+          "clause": "3",
+          "point": null,
+          "score": 22.168592158199164
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_125:khoan_4",
+          "article": "Điều 125",
+          "clause": "4",
+          "point": null,
+          "score": 19.248150571896346
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_37:khoan_3",
+          "article": "Điều 37",
+          "clause": "3",
+          "point": null,
+          "score": 19.027339196681787
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_5",
+          "article": "Điều 139",
+          "clause": "5",
+          "point": null,
+          "score": 18.177472275703337
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_125:khoan_1",
+          "article": "Điều 125",
+          "clause": "1",
+          "point": null,
+          "score": 17.879731547769925
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_122:khoan_4:diem_d",
+          "article": "Điều 122",
+          "clause": "4",
+          "point": "d",
+          "score": 17.722361137431577
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_34:khoan_8",
+          "article": "Điều 34",
+          "clause": "8",
+          "point": null,
+          "score": 17.680270703360343
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_125:khoan_2",
+          "article": "Điều 125",
+          "clause": "2",
+          "point": null,
+          "score": 17.00971114694531
+        }
+      ],
+      "latency_ms": 4.91
+    },
+    {
+      "id": "legacy-11",
+      "question": "thử việc xong công ty không nhận thì có được báo trước không",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_27:khoan_2",
+          "article": "Điều 27",
+          "clause": "2",
+          "point": null,
+          "score": 11.18549844650479
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_25:khoan_3",
+          "article": "Điều 25",
+          "clause": "3",
+          "point": null,
+          "score": 11.17939642660022
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_35:khoan_1:diem_d",
+          "article": "Điều 35",
+          "clause": "1",
+          "point": "d",
+          "score": 10.763349768722104
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_154:khoan_2",
+          "article": "Điều 154",
+          "clause": "2",
+          "point": null,
+          "score": 9.9108400432356
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_216",
+          "article": "Điều 216",
+          "clause": null,
+          "point": null,
+          "score": 9.835388904875929
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_211",
+          "article": "Điều 211",
+          "clause": null,
+          "point": null,
+          "score": 9.828701419889706
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_154:khoan_1",
+          "article": "Điều 154",
+          "clause": "1",
+          "point": null,
+          "score": 9.666084719956928
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_1",
+          "article": "Điều 139",
+          "clause": "1",
+          "point": null,
+          "score": 9.524685882910498
+        }
+      ],
+      "latency_ms": 5.95
+    },
+    {
+      "id": "legacy-12",
+      "question": "nghỉ việc không báo trước thì mất gì",
+      "type": "informal",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_140",
+          "article": "Điều 140",
+          "clause": null,
+          "point": null,
+          "score": 10.531860154330904
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_3",
+          "article": "Điều 113",
+          "clause": "3",
+          "point": null,
+          "score": 10.120102564333838
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_1",
+          "article": "Điều 139",
+          "clause": "1",
+          "point": null,
+          "score": 10.066516671821615
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_47:khoan_3",
+          "article": "Điều 47",
+          "clause": "3",
+          "point": null,
+          "score": 8.851443493044629
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_21:khoan_2",
+          "article": "Điều 21",
+          "clause": "2",
+          "point": null,
+          "score": 8.62674378155279
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_111:khoan_1",
+          "article": "Điều 111",
+          "clause": "1",
+          "point": null,
+          "score": 7.725843138519483
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_4",
+          "article": "Điều 139",
+          "clause": "4",
+          "point": null,
+          "score": 7.553975172460401
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_137:khoan_3",
+          "article": "Điều 137",
+          "clause": "3",
+          "point": null,
+          "score": 7.519681606079132
+        }
+      ],
+      "latency_ms": 4.4
+    },
+    {
+      "id": "legacy-13",
+      "question": "làm ca đêm được thêm bao nhiêu phần trăm lương",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_2",
+          "article": "Điều 98",
+          "clause": "2",
+          "point": null,
+          "score": 14.551673492095881
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_3",
+          "article": "Điều 98",
+          "clause": "3",
+          "point": null,
+          "score": 13.724019792877504
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_1:diem_a",
+          "article": "Điều 98",
+          "clause": "1",
+          "point": "a",
+          "score": 12.900384342887246
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_1:diem_b",
+          "article": "Điều 98",
+          "clause": "1",
+          "point": "b",
+          "score": 12.76681075315973
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_4",
+          "article": "Điều 98",
+          "clause": "4",
+          "point": null,
+          "score": 12.42232685253915
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_95:khoan_3",
+          "article": "Điều 95",
+          "clause": "3",
+          "point": null,
+          "score": 12.14783905853413
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_1:diem_c",
+          "article": "Điều 98",
+          "clause": "1",
+          "point": "c",
+          "score": 11.714783186274408
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_73:khoan_2:diem_c",
+          "article": "Điều 73",
+          "clause": "2",
+          "point": "c",
+          "score": 10.301634669597421
+        }
+      ],
+      "latency_ms": 10.67
+    },
+    {
+      "id": "legacy-14",
+      "question": "mỗi năm được nghỉ phép mấy ngày",
+      "type": "informal",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_6",
+          "article": "Điều 113",
+          "clause": "6",
+          "point": null,
+          "score": 11.842549901059158
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_3",
+          "article": "Điều 113",
+          "clause": "3",
+          "point": null,
+          "score": 11.72539666695527
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_137:khoan_4",
+          "article": "Điều 137",
+          "clause": "4",
+          "point": null,
+          "score": 11.572187194256339
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_114",
+          "article": "Điều 114",
+          "clause": null,
+          "point": null,
+          "score": 10.682538248915115
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_112:khoan_2",
+          "article": "Điều 112",
+          "clause": "2",
+          "point": null,
+          "score": 10.051186653007983
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_169:khoan_2",
+          "article": "Điều 169",
+          "clause": "2",
+          "point": null,
+          "score": 9.771612356860395
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_111:khoan_1",
+          "article": "Điều 111",
+          "clause": "1",
+          "point": null,
+          "score": 9.559774557028646
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_101:khoan_3",
+          "article": "Điều 101",
+          "clause": "3",
+          "point": null,
+          "score": 9.500551346655914
+        }
+      ],
+      "latency_ms": 4.68
+    },
+    {
+      "id": "legacy-15",
+      "question": "công ty nhỏ dưới 10 người có cần nội quy không",
+      "type": "informal",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_218",
+          "article": "Điều 218",
+          "clause": null,
+          "point": null,
+          "score": 13.09331246837473
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_121",
+          "article": "Điều 121",
+          "clause": null,
+          "point": null,
+          "score": 11.994040933588472
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_5",
+          "article": "Điều 139",
+          "clause": "5",
+          "point": null,
+          "score": 11.468579756552844
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_154:khoan_2",
+          "article": "Điều 154",
+          "clause": "2",
+          "point": null,
+          "score": 10.446924712310084
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_154:khoan_1",
+          "article": "Điều 154",
+          "clause": "1",
+          "point": null,
+          "score": 10.213698244110894
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_119:khoan_1",
+          "article": "Điều 119",
+          "clause": "1",
+          "point": null,
+          "score": 9.377019248870933
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_122:khoan_1:diem_c",
+          "article": "Điều 122",
+          "clause": "1",
+          "point": "c",
+          "score": 9.234186515793455
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_3:khoan_9",
+          "article": "Điều 3",
+          "clause": "9",
+          "point": null,
+          "score": 9.154810917430204
+        }
+      ],
+      "latency_ms": 6.24
+    }
+  ],
+  "summary": {
+    "hit": 0.5333333333333333,
+    "hit_samples": 15,
+    "recall": 0.5333333333333333,
+    "recall_samples": 15,
+    "mrr": 0.5,
+    "mrr_samples": 15,
+    "ndcg": 0.5087286502380972,
+    "ndcg_samples": 15,
+    "count": 15,
+    "errors": 0,
+    "p50_ms": 5.14,
+    "p95_ms": 10.67
+  },
+  "by_type": {
+    "informal": {
+      "hit": 0.5333333333333333,
+      "hit_samples": 15,
+      "recall": 0.5333333333333333,
+      "recall_samples": 15,
+      "mrr": 0.5,
+      "mrr_samples": 15,
+      "ndcg": 0.5087286502380972,
+      "ndcg_samples": 15,
+      "count": 15,
+      "errors": 0,
+      "p50_ms": 5.14,
+      "p95_ms": 10.67
+    }
+  }
+}

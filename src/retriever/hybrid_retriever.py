@@ -1,113 +1,104 @@
-# src/retriever/hybrid_retriever.py
+from configs.settings import settings, project_path
+from src.corpus import load_manifest
 from src.retriever.bm25_retriever import BM25LegalRetriever
-from src.vectordb.qdrant_store import LegalVectorStore
-from src.embeddings.embedder import LegalEmbedder
-from configs.settings import settings
 
 
 class HybridRetriever:
-    def __init__(self):
-        self.embedder = LegalEmbedder()
-        self.vector_store = LegalVectorStore()
-        self.bm25 = BM25LegalRetriever()
-        self.bm25.load_index("data/processed/bm25_index.pkl")
+    def __init__(self, embedder=None, vector_store=None, bm25=None, manifest=None):
+        if manifest and manifest["embedding_model"] != settings.EMBED_MODEL:
+            raise ValueError("Embedding model differs from index manifest")
+        if bm25 is None:
+            manifest = manifest or load_manifest()
+            bm25 = BM25LegalRetriever()
+            bm25.load_index(project_path(manifest["bm25_path"]))
+            if bm25.corpus_version != manifest["corpus_version"]:
+                raise ValueError("BM25/manifest corpus mismatch")
+        if embedder is None:
+            from src.embeddings.embedder import LegalEmbedder
+
+            embedder = LegalEmbedder()
+        if vector_store is None:
+            from src.vectordb.qdrant_store import LegalVectorStore
+
+            manifest = manifest or load_manifest()
+            if manifest["embedding_model"] != settings.EMBED_MODEL:
+                raise ValueError("Embedding model differs from index manifest")
+            vector_store = LegalVectorStore(
+                collection=manifest["collection"],
+                path=manifest["qdrant_path"],
+                mode=manifest["qdrant_mode"],
+            )
+            try:
+                vector_store.validate_snapshot(bm25.chunks, manifest["corpus_version"])
+            except Exception:
+                vector_store.close()
+                raise
+        self.embedder, self.vector_store, self.bm25 = embedder, vector_store, bm25
+        self.manifest = manifest or {}
 
     def retrieve(
-            self,
-            query: str,
-            top_k: int = None,
-            domain: str = None
-    ) -> list[dict]:
-        top_k = top_k or settings.TOP_K_VECTOR
-
-        # Fetch nhieu hon tu moi nguon de RRF co pool du rong
-        fetch_k = top_k + 15  # e.g. top_k=20 -> fetch 35 moi nguon
-
-        # Tao expanded query de cai thien recall
-        expanded_query = self._expand_query(query)
-
-        # Vector search - dung ca query goc lan expanded neu khac nhau
-        query_vec = self.embedder.embed_single(query)
-        vector_results = self.vector_store.search(
-            query_vec, top_k=fetch_k, domain_filter=domain
+        self,
+        query,
+        top_k=None,
+        domain=None,
+        rewritten_query=None,
+        document_version=None,
+        as_of_date=None,
+    ):
+        if not query.strip():
+            return []
+        top_k = settings.RETRIEVAL_CANDIDATES if top_k is None else top_k
+        if top_k <= 0:
+            return []
+        if not rewritten_query or rewritten_query == query:
+            from src.pipeline.query_rewriter import expand_legal_query
+            rewritten_query = expand_legal_query(query)
+        queries = list(
+            dict.fromkeys(q for q in [query, rewritten_query] if q and q.strip())
         )
-
-        if expanded_query and expanded_query != query:
-            expanded_vec = self.embedder.embed_single(expanded_query)
-            expanded_vector = self.vector_store.search(
-                expanded_vec, top_k=fetch_k // 2, domain_filter=domain
+        vectors, keywords = [], []
+        for q in queries:
+            vectors.append(
+                self.vector_store.search(
+                    self.embedder.embed_single(q),
+                    top_k=top_k,
+                    domain_filter=domain,
+                    document_version=document_version,
+                    as_of_date=as_of_date,
+                )
             )
-            # Merge ket qua expanded vao vector_results
-            seen_ids = {self._get_chunk_id(r) for r in vector_results}
-            for r in expanded_vector:
-                if self._get_chunk_id(r) not in seen_ids:
-                    vector_results.append(r)
-
-        # BM25 search - dung expanded query
-        bm25_query = expanded_query if (expanded_query and expanded_query != query) else query
-        bm25_results = self.bm25.search(bm25_query, top_k=fetch_k)
-
-        # Reciprocal Rank Fusion -> tra ve top_k cho reranker
-        return self._rrf_merge(vector_results, bm25_results, top_k)
-
-    def _get_chunk_id(self, item: dict) -> str:
-        return item["metadata"].get("chunk_id", item["content"][:50])
-
-    def _expand_query(self, query: str) -> str:
-        """Mo rong query de cai thien recall cho cac truong hop dac biet"""
-        if not query:
-            return query
-        q_lower = query.lower()
-
-        # Truy van phu dinh "khong duoc don phuong cham dut"
-        # -> them cac truong hop cu the trong Dieu 37
-        if "kh\u00f4ng \u0111\u01b0\u1ee3c" in q_lower and (
-            "\u0111\u01a1n ph\u01b0\u01a1ng" in q_lower or "ch\u1ea5m d\u1ee9t" in q_lower
-        ):
-            return (query + " \u1ed1m \u0111au thai s\u1ea3n b\u1ec7nh ngh\u1ec1 nghi\u1ec7p"
-                    " tai n\u1ea1n lao \u0111\u1ed9ng c\u1ea5m ch\u1ea5m d\u1ee9t")
-
-        # Hinh thuc ky luat -> them cac hinh thuc cu the (Dieu 124)
-        if "h\u00ecnh th\u1ee9c" in q_lower and "k\u1ef7 lu\u1eadt" in q_lower:
-            return (query + " khi\u1ec3n tr\u00e1ch c\u1ea3nh c\u00e1o sa th\u1ea3i"
-                    " k\u00e9o d\u00e0i n\u00e2ng l\u01b0\u01a1ng")
-
-        # Sa thai khi nao -> them tu khoa noi dung Dieu 125
-        if "sa th\u1ea3i" in q_lower and (
-            "khi n\u00e0o" in q_lower or "\u00e1p d\u1ee5ng" in q_lower
-        ):
-            return (query + " tr\u1ed9m c\u1eafp tham \u00f4 \u0111\u00e1nh b\u1ea1c"
-                    " ma t\u00fay ti\u1ebft l\u1ed9 b\u00ed m\u1eadt")
-
-        return query
-
-    def _rrf_merge(
-            self,
-            list1: list[dict],
-            list2: list[dict],
-            top_k: int,
-            k: int = 60
-    ) -> list[dict]:
-        scores = {}
-
-        def get_id(item):
-            return item["metadata"].get("chunk_id", item["content"][:50])
-
-        for rank, item in enumerate(list1):
-            id_ = get_id(item)
-            scores[id_] = scores.get(id_, {"item": item, "score": 0})
-            scores[id_]["score"] += 1 / (k + rank + 1)
-
-        for rank, item in enumerate(list2):
-            id_ = get_id(item)
-            if id_ not in scores:
-                scores[id_] = {"item": item, "score": 0}
-            scores[id_]["score"] += 1 / (k + rank + 1)
-
-        sorted_results = sorted(
-            scores.values(),
-            key=lambda x: x["score"],
-            reverse=True
+            keywords.append(
+                self.bm25.search(
+                    q,
+                    top_k=top_k,
+                    domain=domain,
+                    document_version=document_version,
+                    as_of_date=as_of_date,
+                )
+            )
+        # Merge query variants within each source first so rewriting cannot double its weight.
+        return self._rrf_merge(
+            self._fuse(vectors, top_k), self._fuse(keywords, top_k), top_k
         )
 
-        return [r["item"] for r in sorted_results[:top_k]]
+    @staticmethod
+    def _get_chunk_id(item):
+        return item["metadata"]["chunk_id"]
+
+    @classmethod
+    def _fuse(cls, lists, top_k, k=None):
+        scores, items = {}, {}
+        for rows in lists:
+            seen = set()
+            for rank, item in enumerate(rows, 1):
+                key = cls._get_chunk_id(item)
+                if key in seen:
+                    continue
+                seen.add(key)
+                items[key] = item
+                scores[key] = scores.get(key, 0) + 1 / ((k or settings.RRF_K) + rank)
+        keys = sorted(scores, key=lambda key: (-scores[key], key))[:top_k]
+        return [{**items[key], "fusion_score": scores[key]} for key in keys]
+
+    def _rrf_merge(self, list1, list2, top_k, k=None):
+        return self._fuse([list1, list2], top_k, k)

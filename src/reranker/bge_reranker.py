@@ -1,56 +1,53 @@
-# src/reranker/bge_reranker.py
-from sentence_transformers import CrossEncoder
 from configs.settings import settings
 
 
 class BGEReranker:
-    def __init__(self):
-        # BGE reranker support Vietnamese well
-        self.model = CrossEncoder("BAAI/bge-reranker-v2-m3")
+    def __init__(self, model=None):
+        if model is None:
+            from sentence_transformers import CrossEncoder
+            from torch.nn import Identity
 
-    def rerank(
-            self,
-            query: str,
-            chunks: list[dict],
-            top_k: int = None
-    ) -> list[dict]:
-        top_k = top_k or settings.TOP_K_RERANK
+            model = CrossEncoder(
+                settings.RERANKER_MODEL,
+                device=settings.MODEL_DEVICE,
+                activation_fn=Identity(),
+            )
+        self.model = model
 
-        # Add article metadata into input to reranker 
+    def rerank(self, query, chunks, top_k=None):
+        top_k = settings.TOP_K_RERANK if top_k is None else top_k
+        if not chunks or top_k <= 0:
+            return []
         pairs = [
             (
                 query,
-                f"{c['metadata'].get('article', '')} - {c['metadata'].get('article_title', '')}\n{c['content']}"
+                f"{c['metadata'].get('article','')} — {c['metadata'].get('article_title','')}\n{c['content']}",
             )
             for c in chunks
         ]
-        scores = self.model.predict(pairs)
-
+        scores = self.model.predict(pairs, batch_size=8, show_progress_bar=False)
         ranked = sorted(
-            zip(scores, chunks),
-            key=lambda x: x[0],
-            reverse=True
+            [
+                {**c, "metadata": dict(c["metadata"]), "rerank_score": float(s)}
+                for s, c in zip(scores, chunks)
+            ],
+            key=lambda c: c["rerank_score"],
+            reverse=True,
         )
-
-        results = []
-        seen_articles = {}
-        overflow = []
-        for score, chunk in ranked:
-            article = chunk["metadata"].get("article", "")
-            if article not in seen_articles:
-                seen_articles[article] = True
-                chunk["rerank_score"] = float(score)
-                results.append(chunk)
-                if len(results) == top_k:
-                    break
+        cap = settings.RERANK_MAX_PER_ARTICLE
+        if not cap:
+            return ranked[:top_k]
+        selected, overflow, counts = [], [], {}
+        for c in ranked:
+            m = c["metadata"]
+            key = (m.get("document_id"), m.get("document_version"), m.get("article"))
+            if counts.get(key, 0) < cap:
+                selected.append(c)
+                counts[key] = counts.get(key, 0) + 1
             else:
-                chunk["rerank_score"] = float(score)
-                overflow.append(chunk)
-
-        if len(results) < top_k:
-            for chunk in overflow:
-                results.append(chunk)
-                if len(results) == top_k:
-                    break
-
-        return results
+                overflow.append(c)
+        return sorted(
+            (selected[:top_k] + overflow[: max(0, top_k - len(selected))]),
+            key=lambda c: c["rerank_score"],
+            reverse=True,
+        )

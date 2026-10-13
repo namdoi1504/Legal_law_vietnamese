@@ -2,6 +2,7 @@
 Crawl HTML Bộ luật Lao động 2019 từ thuvienphapluat.vn
 Lưu raw HTML vào data/raw/
 """
+
 import os
 import sys
 

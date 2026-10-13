@@ -6,6 +6,9 @@ API_URL = "http://localhost:8000"
 
 st.set_page_config(page_title="⚖️ Trợ lý Pháp luật VN", layout="wide")
 st.title("⚖️ Trợ lý Pháp luật Việt Nam")
+st.caption(
+    "Tra cứu trong Bộ luật Lao động 2019 đã lập chỉ mục. Chưa xác minh đầy đủ sửa đổi và hiệu lực hiện hành."
+)
 
 tab1, tab2 = st.tabs(["💬 Hỏi đáp pháp luật", "📄 Kiểm tra văn bản / Hợp đồng"])
 
@@ -37,7 +40,7 @@ with tab1:
                     resp = httpx.post(
                         f"{API_URL}/chat",
                         json={"query": prompt, "domain": None},
-                        timeout=60
+                        timeout=httpx.Timeout(120, connect=10),
                     )
 
                     if resp.status_code != 200:
@@ -57,11 +60,15 @@ with tab1:
 
                         st.caption(f"⏱ {latency:.0f}ms")
 
-                        st.session_state.messages.append({
-                            "role": "assistant",
-                            "content": answer,
-                            "citations": citations if isinstance(citations, list) else []
-                        })
+                        st.session_state.messages.append(
+                            {
+                                "role": "assistant",
+                                "content": answer,
+                                "citations": (
+                                    citations if isinstance(citations, list) else []
+                                ),
+                            }
+                        )
 
                 except httpx.TimeoutException:
                     st.error("Timeout — thử lại sau.")
@@ -73,14 +80,14 @@ with tab2:
     st.subheader("📄 Kiểm tra hợp đồng / văn bản pháp lý")
     st.caption(
         "Upload tối đa 3 file PDF hoặc Word — "
-        "AI sẽ phát hiện điều khoản vi phạm pháp luật lao động Việt Nam."
+        "Đối chiếu từng phần với dữ liệu luật hiện có và nêu rõ phần chưa đủ căn cứ."
     )
 
     uploaded_files = st.file_uploader(
         "Chọn file (PDF hoặc Word)",
-        type=["pdf", "docx", "doc"],
+        type=["pdf", "docx"],
         accept_multiple_files=True,
-        help="Tối đa 3 file"
+        help="Tối đa 3 file",
     )
 
     question = st.text_area(
@@ -89,7 +96,7 @@ with tab2:
             "Ví dụ: Điều khoản thời gian báo trước có đúng luật không?\n"
             "Nếu để trống, AI sẽ tự kiểm tra toàn bộ văn bản."
         ),
-        height=80
+        height=80,
     )
 
     if st.button("🔍 Kiểm tra", type="primary"):
@@ -101,7 +108,10 @@ with tab2:
             with st.spinner("Đang phân tích văn bản và đối chiếu pháp luật..."):
                 try:
                     files = [
-                        ("files", (f.name, f.read(), f.type or "application/octet-stream"))
+                        (
+                            "files",
+                            (f.name, f.read(), f.type or "application/octet-stream"),
+                        )
                         for f in uploaded_files
                     ]
                     data = {}
@@ -112,11 +122,13 @@ with tab2:
                         f"{API_URL}/analyze-document",
                         files=files,
                         data=data,
-                        timeout=120
+                        timeout=httpx.Timeout(1800, connect=10),
                     )
 
                     if resp.status_code != 200:
-                        st.error(f"Lỗi API {resp.status_code}: {resp.json().get('detail', resp.text)}")
+                        st.error(
+                            f"Lỗi API {resp.status_code}: {resp.json().get('detail', resp.text)}"
+                        )
                     else:
                         result = resp.json()
                         answer = result.get("answer", "")
@@ -124,7 +136,14 @@ with tab2:
                         latency = result.get("latency_ms", 0)
                         files_analyzed = result.get("files_analyzed", [])
 
-                        st.success(f"Đã phân tích {len(files_analyzed)} file trong {latency:.0f}ms")
+                        if result.get("status") == "partial":
+                            st.warning(
+                                "Báo cáo chưa hoàn tất tất cả các phần. Xem các giới hạn bên dưới."
+                            )
+                        else:
+                            st.success(
+                                f"Đã xử lý {len(files_analyzed)} file trong {latency:.0f}ms"
+                            )
                         st.markdown(answer)
 
                         if isinstance(citations, list) and len(citations) > 0:

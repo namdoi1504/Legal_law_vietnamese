@@ -3,6 +3,7 @@ Parse HTML → JSON chunks
 Input:  data/raw/labor_law_2019.html
 Output: data/processed/labor_law_2019.json
 """
+
 import os
 import sys
 
@@ -10,10 +11,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.parser.labor_law_parser import LaborLawParser
 from src.parser.validator import validate_chunks
+from scripts.build_index import SOURCE_URL
+from configs.settings import ROOT
 
-INPUT_PATH = "data/raw/labor_law_2019.html"
-OUTPUT_DIR = "data/processed"
-OUTPUT_PATH = os.path.join(OUTPUT_DIR, "labor_law_2019.json")
+INPUT_PATH = ROOT / "data/raw/labor_law_2019.html"
+OUTPUT_DIR = ROOT / "data/processed"
+OUTPUT_PATH = OUTPUT_DIR / "labor_law_2019_v2.json"
 
 
 def main():
@@ -25,13 +28,13 @@ def main():
         html = f.read()
 
     # Parse
-    parser = LaborLawParser()
+    parser = LaborLawParser(SOURCE_URL)
     print("Parsing...")
     chunks = parser.parse_html(html)
 
     # Validate
     print("\n--- Validation Report ---")
-    validate_chunks(chunks)
+    validate_chunks(chunks, range(1, 221))
     print("-------------------------\n")
 
     # Confirm when saving if there are issues

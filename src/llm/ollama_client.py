@@ -14,30 +14,24 @@ class OllamaClient(BaseLLMClient):
         system_prompt: str,
         user_message: str,
         temperature: float = 0.1,
-        stream: bool = False
+        stream: bool = False,
     ) -> str:
         payload = {
             "model": self.model,
             "messages": [
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message}
+                {"role": "user", "content": user_message},
             ],
             "options": {
                 "temperature": temperature,
-                "num_ctx": 4096,
-                "num_predict": 1024,
+                "num_ctx": settings.LLM_CONTEXT_TOKENS,
+                "num_predict": settings.LLM_MAX_OUTPUT_TOKENS,
             },
-            "stream": stream
+            "stream": stream,
         }
 
-        with httpx.Client(timeout=600) as client:
-            resp = client.post(
-                f"{self.base_url}/api/chat",
-                json=payload
-            )
-            if resp.status_code == 500:
-                print(f"Ollama error: {resp.text}")
-                return "Error calling LLM. Please try again."
+        with httpx.Client(timeout=settings.LLM_TIMEOUT) as client:
+            resp = client.post(f"{self.base_url}/api/chat", json=payload)
             resp.raise_for_status()
 
         return resp.json()["message"]["content"]

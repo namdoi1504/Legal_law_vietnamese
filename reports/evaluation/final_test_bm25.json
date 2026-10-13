@@ -1,0 +1,2566 @@
+{
+  "created_at": "2026-10-13T16:01:38.257011+00:00",
+  "mode": "bm25",
+  "python": "3.11.9",
+  "git_revision": "53ebf661ff50796dd402d47ed26ce4eb5b038080",
+  "working_diff_sha256": "5a319c9d885a8a43452a7d5be15e4e3344d39bb729caa28b1d140d7ea719ac30",
+  "dataset": "D:\\Admin\\Python\\legal-rag\\data\\evaluation\\test.jsonl",
+  "dataset_sha256": "e34955460a5445c0abbcebc29f566dc98fb430090cf00134bba6fa2983f42d9b",
+  "corpus_version": "6aa05971e2a6bc143a6dea7dcc4b1540d5834bf7dadf0e0b3d3b3fc9f2b5d945",
+  "prompt_version": "grounded-v2",
+  "settings": {
+    "EMBED_MODEL": "BAAI/bge-m3",
+    "RERANKER_MODEL": "BAAI/bge-reranker-v2-m3",
+    "LLM_PROVIDER": "groq",
+    "GROQ_MODEL": "qwen/qwen3.8-27b",
+    "TOP_K_RERANK": 8,
+    "RETRIEVAL_CANDIDATES": 40,
+    "ENABLE_QUERY_REWRITE": true,
+    "ENABLE_QUERY_ALIASES": true,
+    "RERANKER_MIN_SCORE": -10.0,
+    "RERANK_MAX_PER_ARTICLE": 0,
+    "CONTEXT_TOKEN_BUDGET": 9000
+  },
+  "limitations": [
+    "Labels are not independently reviewed.",
+    "Citation checks verify identity and verbatim quotes, not semantic correctness."
+  ],
+  "cases": [
+    {
+      "id": "formal-001",
+      "question": "Hợp đồng lao động không xác định thời hạn là gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_20:khoan_1:diem_a",
+          "article": "Điều 20",
+          "clause": "1",
+          "point": "a",
+          "score": 15.996795450192586
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_20:khoan_1:diem_b",
+          "article": "Điều 20",
+          "clause": "1",
+          "point": "b",
+          "score": 14.79604865710318
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_36:khoan_1:diem_b",
+          "article": "Điều 36",
+          "clause": "1",
+          "point": "b",
+          "score": 13.57242857867586
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_151:khoan_2",
+          "article": "Điều 151",
+          "clause": "2",
+          "point": null,
+          "score": 12.246035489412332
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_20:khoan_2:diem_c",
+          "article": "Điều 20",
+          "clause": "2",
+          "point": "c",
+          "score": 12.230187859411153
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_35:khoan_1:diem_a",
+          "article": "Điều 35",
+          "clause": "1",
+          "point": "a",
+          "score": 11.452727173610487
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_20:khoan_2:diem_b",
+          "article": "Điều 20",
+          "clause": "2",
+          "point": "b",
+          "score": 11.415253991176725
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_149:khoan_1",
+          "article": "Điều 149",
+          "clause": "1",
+          "point": null,
+          "score": 11.252850222116766
+        }
+      ],
+      "latency_ms": 12386.9
+    },
+    {
+      "id": "formal-007",
+      "question": "Quyền đơn phương chấm dứt hợp đồng của người sử dụng lao động?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_36:khoan_1:diem_d",
+          "article": "Điều 36",
+          "clause": "1",
+          "point": "d",
+          "score": 17.517609696135693
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_36:khoan_3",
+          "article": "Điều 36",
+          "clause": "3",
+          "point": null,
+          "score": 17.288823155703135
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_35:khoan_1:diem_a",
+          "article": "Điều 35",
+          "clause": "1",
+          "point": "a",
+          "score": 17.281301762364816
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_36:khoan_1:diem_g",
+          "article": "Điều 36",
+          "clause": "1",
+          "point": "g",
+          "score": 17.171401494122975
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_36:khoan_1:diem_đ",
+          "article": "Điều 36",
+          "clause": "1",
+          "point": "đ",
+          "score": 17.06432026186003
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_35:khoan_2:diem_g",
+          "article": "Điều 35",
+          "clause": "2",
+          "point": "g",
+          "score": 16.94844297641179
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_35:khoan_2:diem_d",
+          "article": "Điều 35",
+          "clause": "2",
+          "point": "d",
+          "score": 16.93720295615282
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_36:khoan_1:diem_e",
+          "article": "Điều 36",
+          "clause": "1",
+          "point": "e",
+          "score": 16.88066742888424
+        }
+      ],
+      "latency_ms": 4.99
+    },
+    {
+      "id": "formal-019",
+      "question": "Nghỉ lễ tết gồm những ngày nào trong năm?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.25,
+        "ndcg": 0.43067655807339306
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_3",
+          "article": "Điều 113",
+          "clause": "3",
+          "point": null,
+          "score": 15.746365195382776
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_101:khoan_3",
+          "article": "Điều 101",
+          "clause": "3",
+          "point": null,
+          "score": 13.3045356192256
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_6",
+          "article": "Điều 113",
+          "clause": "6",
+          "point": null,
+          "score": 13.103473999435955
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_114",
+          "article": "Điều 114",
+          "clause": null,
+          "point": null,
+          "score": 11.785813701733424
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_2",
+          "article": "Điều 113",
+          "clause": "2",
+          "point": null,
+          "score": 10.851876026651958
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_112:khoan_1:diem_c",
+          "article": "Điều 112",
+          "clause": "1",
+          "point": "c",
+          "score": 10.704789364655468
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_112:khoan_1:diem_d",
+          "article": "Điều 112",
+          "clause": "1",
+          "point": "d",
+          "score": 10.638278415386884
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_112:khoan_1:diem_b",
+          "article": "Điều 112",
+          "clause": "1",
+          "point": "b",
+          "score": 10.61210826531538
+        }
+      ],
+      "latency_ms": 5.39
+    },
+    {
+      "id": "formal-024",
+      "question": "Hình thức xử lý kỷ luật lao động gồm những gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.5
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_122:khoan_2",
+          "article": "Điều 122",
+          "clause": "2",
+          "point": null,
+          "score": 16.310242527011845
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_125:khoan_3",
+          "article": "Điều 125",
+          "clause": "3",
+          "point": null,
+          "score": 16.29952953015861
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_124:khoan_1",
+          "article": "Điều 124",
+          "clause": "1",
+          "point": null,
+          "score": 15.563635780143612
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_124:khoan_3",
+          "article": "Điều 124",
+          "clause": "3",
+          "point": null,
+          "score": 15.563635780143612
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_124:khoan_4",
+          "article": "Điều 124",
+          "clause": "4",
+          "point": null,
+          "score": 15.563635780143612
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_125:khoan_1",
+          "article": "Điều 125",
+          "clause": "1",
+          "point": null,
+          "score": 15.395957135893207
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_118:khoan_2:diem_g",
+          "article": "Điều 118",
+          "clause": "2",
+          "point": "g",
+          "score": 15.217479887466649
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_124:khoan_2",
+          "article": "Điều 124",
+          "clause": "2",
+          "point": null,
+          "score": 14.401453775301428
+        }
+      ],
+      "latency_ms": 4.75
+    },
+    {
+      "id": "formal-034",
+      "question": "Các hành vi nào bị nghiêm cấm trong lĩnh vực lao động?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_1",
+          "article": "Điều 8",
+          "clause": "1",
+          "point": null,
+          "score": 21.00213969550683
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_2",
+          "article": "Điều 8",
+          "clause": "2",
+          "point": null,
+          "score": 20.479316303871848
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_7",
+          "article": "Điều 8",
+          "clause": "7",
+          "point": null,
+          "score": 20.3349104843256
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_3",
+          "article": "Điều 8",
+          "clause": "3",
+          "point": null,
+          "score": 20.306723832883844
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_5",
+          "article": "Điều 8",
+          "clause": "5",
+          "point": null,
+          "score": 16.601218003492672
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_4",
+          "article": "Điều 8",
+          "clause": "4",
+          "point": null,
+          "score": 16.1263503736141
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_6",
+          "article": "Điều 8",
+          "clause": "6",
+          "point": null,
+          "score": 15.624176298939537
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_208:khoan_6",
+          "article": "Điều 208",
+          "clause": "6",
+          "point": null,
+          "score": 14.375058701627678
+        }
+      ],
+      "latency_ms": 5.07
+    },
+    {
+      "id": "formal-036",
+      "question": "Người sử dụng lao động có trách nhiệm gì về quản lý lao động?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_12:khoan_1",
+          "article": "Điều 12",
+          "clause": "1",
+          "point": null,
+          "score": 16.67370687009545
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_12:khoan_3",
+          "article": "Điều 12",
+          "clause": "3",
+          "point": null,
+          "score": 15.716259239718458
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_4:khoan_2",
+          "article": "Điều 4",
+          "clause": "2",
+          "point": null,
+          "score": 15.198093425929663
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_12:khoan_2",
+          "article": "Điều 12",
+          "clause": "2",
+          "point": null,
+          "score": 14.850414033433465
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_212:khoan_3",
+          "article": "Điều 212",
+          "clause": "3",
+          "point": null,
+          "score": 13.080722663156365
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_181:khoan_1",
+          "article": "Điều 181",
+          "clause": "1",
+          "point": null,
+          "score": 12.545433148300305
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_144:khoan_2",
+          "article": "Điều 144",
+          "clause": "2",
+          "point": null,
+          "score": 12.352415368830693
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_5:khoan_2:diem_b",
+          "article": "Điều 5",
+          "clause": "2",
+          "point": "b",
+          "score": 12.008585947321281
+        }
+      ],
+      "latency_ms": 5.84
+    },
+    {
+      "id": "formal-042",
+      "question": "Hợp đồng lao động xác định thời hạn và không xác định thời hạn khác nhau thế nào?",
+      "type": "comparison",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_20:khoan_1:diem_a",
+          "article": "Điều 20",
+          "clause": "1",
+          "point": "a",
+          "score": 23.0327574125745
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_36:khoan_1:diem_b",
+          "article": "Điều 36",
+          "clause": "1",
+          "point": "b",
+          "score": 21.941380456158477
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_20:khoan_1:diem_b",
+          "article": "Điều 20",
+          "clause": "1",
+          "point": "b",
+          "score": 21.432183895561167
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_151:khoan_2",
+          "article": "Điều 151",
+          "clause": "2",
+          "point": null,
+          "score": 19.449912487348104
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_20:khoan_2:diem_c",
+          "article": "Điều 20",
+          "clause": "2",
+          "point": "c",
+          "score": 18.792354391165002
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_149:khoan_1",
+          "article": "Điều 149",
+          "clause": "1",
+          "point": null,
+          "score": 18.57915404367769
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_35:khoan_1:diem_c",
+          "article": "Điều 35",
+          "clause": "1",
+          "point": "c",
+          "score": 17.839897711434848
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_78:khoan_3",
+          "article": "Điều 78",
+          "clause": "3",
+          "point": null,
+          "score": 17.636874874898993
+        }
+      ],
+      "latency_ms": 5.94
+    },
+    {
+      "id": "formal-045",
+      "question": "Thử việc có được ghi trong hợp đồng lao động không?",
+      "type": "negation",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_24:khoan_1",
+          "article": "Điều 24",
+          "clause": "1",
+          "point": null,
+          "score": 21.509909566580937
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_34:khoan_13",
+          "article": "Điều 34",
+          "clause": "13",
+          "point": null,
+          "score": 21.345196171654077
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_27:khoan_1",
+          "article": "Điều 27",
+          "clause": "1",
+          "point": null,
+          "score": 18.03520746069379
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_27:khoan_2",
+          "article": "Điều 27",
+          "clause": "2",
+          "point": null,
+          "score": 16.881571888324018
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_24:khoan_3",
+          "article": "Điều 24",
+          "clause": "3",
+          "point": null,
+          "score": 15.829570633120806
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_24:khoan_2",
+          "article": "Điều 24",
+          "clause": "2",
+          "point": null,
+          "score": 13.289715167915269
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_25:khoan_4",
+          "article": "Điều 25",
+          "clause": "4",
+          "point": null,
+          "score": 13.041018335848158
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_26",
+          "article": "Điều 26",
+          "clause": null,
+          "point": null,
+          "score": 12.80969107881407
+        }
+      ],
+      "latency_ms": 5.43
+    },
+    {
+      "id": "formal-047",
+      "question": "Người lao động có được làm thay người khác theo hợp đồng không?",
+      "type": "negation",
+      "retrieval": {
+        "hit": 0,
+        "recall": 0.0,
+        "mrr": 0,
+        "ndcg": 0.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_29:khoan_4",
+          "article": "Điều 29",
+          "clause": "4",
+          "point": null,
+          "score": 15.17238325943178
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_29:khoan_1",
+          "article": "Điều 29",
+          "clause": "1",
+          "point": null,
+          "score": 15.095373045558588
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_29:khoan_2",
+          "article": "Điều 29",
+          "clause": "2",
+          "point": null,
+          "score": 14.383261721609585
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_17:khoan_2",
+          "article": "Điều 17",
+          "clause": "2",
+          "point": null,
+          "score": 14.250534232701074
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_29:khoan_3",
+          "article": "Điều 29",
+          "clause": "3",
+          "point": null,
+          "score": 13.745023991634753
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_31",
+          "article": "Điều 31",
+          "clause": null,
+          "point": null,
+          "score": 13.191413563580943
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_18:khoan_5",
+          "article": "Điều 18",
+          "clause": "5",
+          "point": null,
+          "score": 12.95371906877649
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_17:khoan_3",
+          "article": "Điều 17",
+          "clause": "3",
+          "point": null,
+          "score": 12.927829787427534
+        }
+      ],
+      "latency_ms": 5.77
+    },
+    {
+      "id": "formal-051",
+      "question": "Người lao động làm việc không trọn thời gian có quyền gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_32:khoan_3",
+          "article": "Điều 32",
+          "clause": "3",
+          "point": null,
+          "score": 20.553928544162694
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_32:khoan_2",
+          "article": "Điều 32",
+          "clause": "2",
+          "point": null,
+          "score": 19.818044727375835
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_32:khoan_1",
+          "article": "Điều 32",
+          "clause": "1",
+          "point": null,
+          "score": 18.729438553603586
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_148:khoan_2",
+          "article": "Điều 148",
+          "clause": "2",
+          "point": null,
+          "score": 17.055316582382897
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_135:khoan_2",
+          "article": "Điều 135",
+          "clause": "2",
+          "point": null,
+          "score": 15.046983299317533
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_44:khoan_1:diem_a",
+          "article": "Điều 44",
+          "clause": "1",
+          "point": "a",
+          "score": 13.829952500862136
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_46:khoan_2",
+          "article": "Điều 46",
+          "clause": "2",
+          "point": null,
+          "score": 10.231720211551604
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_47:khoan_2",
+          "article": "Điều 47",
+          "clause": "2",
+          "point": null,
+          "score": 10.15776803573521
+        }
+      ],
+      "latency_ms": 4.53
+    },
+    {
+      "id": "formal-056",
+      "question": "Phương án sử dụng lao động phải có những nội dung gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_44:khoan_1:diem_đ",
+          "article": "Điều 44",
+          "clause": "1",
+          "point": "đ",
+          "score": 17.152359160115076
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_44:khoan_1:diem_c",
+          "article": "Điều 44",
+          "clause": "1",
+          "point": "c",
+          "score": 16.869323007424217
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_44:khoan_1:diem_b",
+          "article": "Điều 44",
+          "clause": "1",
+          "point": "b",
+          "score": 16.54094903218861
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_44:khoan_1:diem_d",
+          "article": "Điều 44",
+          "clause": "1",
+          "point": "d",
+          "score": 16.359175331097674
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_44:khoan_1:diem_a",
+          "article": "Điều 44",
+          "clause": "1",
+          "point": "a",
+          "score": 14.725688586363386
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_44:khoan_2",
+          "article": "Điều 44",
+          "clause": "2",
+          "point": null,
+          "score": 11.529936654761782
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_118:khoan_4",
+          "article": "Điều 118",
+          "clause": "4",
+          "point": null,
+          "score": 10.734745569639875
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_21:khoan_1:diem_d",
+          "article": "Điều 21",
+          "clause": "1",
+          "point": "d",
+          "score": 10.467026432078686
+        }
+      ],
+      "latency_ms": 4.63
+    },
+    {
+      "id": "formal-061",
+      "question": "Cho thuê lại lao động là gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714575
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_53:khoan_1",
+          "article": "Điều 53",
+          "clause": "1",
+          "point": null,
+          "score": 15.92211998810223
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_52:khoan_2",
+          "article": "Điều 52",
+          "clause": "2",
+          "point": null,
+          "score": 15.707335684060244
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_57:khoan_4",
+          "article": "Điều 57",
+          "clause": "4",
+          "point": null,
+          "score": 15.583614996004847
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_52:khoan_1",
+          "article": "Điều 52",
+          "clause": "1",
+          "point": null,
+          "score": 15.418945792375052
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_53:khoan_4",
+          "article": "Điều 53",
+          "clause": "4",
+          "point": null,
+          "score": 15.34651094878208
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_54:khoan_1",
+          "article": "Điều 54",
+          "clause": "1",
+          "point": null,
+          "score": 15.106746467430298
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_55:khoan_1",
+          "article": "Điều 55",
+          "clause": "1",
+          "point": null,
+          "score": 14.962988715482414
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_55:khoan_2:diem_b",
+          "article": "Điều 55",
+          "clause": "2",
+          "point": "b",
+          "score": 14.780176525330317
+        }
+      ],
+      "latency_ms": 4.61
+    },
+    {
+      "id": "formal-065",
+      "question": "Trách nhiệm của người sử dụng lao động về đào tạo nghề?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714575
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_62:khoan_2:diem_e",
+          "article": "Điều 62",
+          "clause": "2",
+          "point": "e",
+          "score": 19.734835538175055
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_62:khoan_2:diem_đ",
+          "article": "Điều 62",
+          "clause": "2",
+          "point": "đ",
+          "score": 19.636431463906916
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_60:khoan_1",
+          "article": "Điều 60",
+          "clause": "1",
+          "point": null,
+          "score": 18.95495442934448
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_60:khoan_2",
+          "article": "Điều 60",
+          "clause": "2",
+          "point": null,
+          "score": 18.825925730205306
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_62:khoan_2:diem_d",
+          "article": "Điều 62",
+          "clause": "2",
+          "point": "d",
+          "score": 18.37488414293082
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_62:khoan_1",
+          "article": "Điều 62",
+          "clause": "1",
+          "point": null,
+          "score": 17.06953940292619
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_61:khoan_1",
+          "article": "Điều 61",
+          "clause": "1",
+          "point": null,
+          "score": 16.3375032878481
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_62:khoan_2:diem_a",
+          "article": "Điều 62",
+          "clause": "2",
+          "point": "a",
+          "score": 16.133407933136574
+        }
+      ],
+      "latency_ms": 3.68
+    },
+    {
+      "id": "formal-076",
+      "question": "Hội đồng tiền lương quốc gia có chức năng gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_92:khoan_3",
+          "article": "Điều 92",
+          "clause": "3",
+          "point": null,
+          "score": 21.949186610572625
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_92:khoan_1",
+          "article": "Điều 92",
+          "clause": "1",
+          "point": null,
+          "score": 16.062190987615775
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_92:khoan_2",
+          "article": "Điều 92",
+          "clause": "2",
+          "point": null,
+          "score": 13.911210635980538
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_91:khoan_4",
+          "article": "Điều 91",
+          "clause": "4",
+          "point": null,
+          "score": 11.501731481495106
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_73:khoan_4",
+          "article": "Điều 73",
+          "clause": "4",
+          "point": null,
+          "score": 9.77512929158134
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_212:khoan_2",
+          "article": "Điều 212",
+          "clause": "2",
+          "point": null,
+          "score": 7.990743705390755
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_142:khoan_1",
+          "article": "Điều 142",
+          "clause": "1",
+          "point": null,
+          "score": 7.422515359327919
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_5",
+          "article": "Điều 8",
+          "clause": "5",
+          "point": null,
+          "score": 6.697167248859371
+        }
+      ],
+      "latency_ms": 3.02
+    },
+    {
+      "id": "formal-078",
+      "question": "Tiền lương trả qua người cai thầu được quy định như thế nào?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714575
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_96:khoan_2",
+          "article": "Điều 96",
+          "clause": "2",
+          "point": null,
+          "score": 15.479425922790593
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_100:khoan_2",
+          "article": "Điều 100",
+          "clause": "2",
+          "point": null,
+          "score": 15.024894010301681
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_100:khoan_1",
+          "article": "Điều 100",
+          "clause": "1",
+          "point": null,
+          "score": 13.900290625841558
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_99:khoan_1",
+          "article": "Điều 99",
+          "clause": "1",
+          "point": null,
+          "score": 10.61100045316138
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_95:khoan_3",
+          "article": "Điều 95",
+          "clause": "3",
+          "point": null,
+          "score": 10.198721168681889
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_95:khoan_2",
+          "article": "Điều 95",
+          "clause": "2",
+          "point": null,
+          "score": 10.149035775559305
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_2",
+          "article": "Điều 98",
+          "clause": "2",
+          "point": null,
+          "score": 10.053956598848556
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_98:khoan_3",
+          "article": "Điều 98",
+          "clause": "3",
+          "point": null,
+          "score": 9.705481574581572
+        }
+      ],
+      "latency_ms": 4.33
+    },
+    {
+      "id": "formal-081",
+      "question": "Thưởng cho người lao động được quy định như thế nào?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_104:khoan_1",
+          "article": "Điều 104",
+          "clause": "1",
+          "point": null,
+          "score": 15.01459975425146
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_104:khoan_2",
+          "article": "Điều 104",
+          "clause": "2",
+          "point": null,
+          "score": 12.339677122169247
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_178:khoan_3",
+          "article": "Điều 178",
+          "clause": "3",
+          "point": null,
+          "score": 9.280905270821336
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_166",
+          "article": "Điều 166",
+          "clause": null,
+          "point": null,
+          "score": 8.980652524457922
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_53:khoan_4",
+          "article": "Điều 53",
+          "clause": "4",
+          "point": null,
+          "score": 7.704296394098831
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_52:khoan_1",
+          "article": "Điều 52",
+          "clause": "1",
+          "point": null,
+          "score": 7.578400256510088
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_42:khoan_6",
+          "article": "Điều 42",
+          "clause": "6",
+          "point": null,
+          "score": 7.539375374356753
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_94:khoan_1",
+          "article": "Điều 94",
+          "clause": "1",
+          "point": null,
+          "score": 7.486178229773552
+        }
+      ],
+      "latency_ms": 4.23
+    },
+    {
+      "id": "formal-083",
+      "question": "Làm thêm giờ trong trường hợp đặc biệt được quy định thế nào?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_108:khoan_1",
+          "article": "Điều 108",
+          "clause": "1",
+          "point": null,
+          "score": 18.651084414078106
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_2:diem_b",
+          "article": "Điều 107",
+          "clause": "2",
+          "point": "b",
+          "score": 16.312397320838897
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_2:diem_c",
+          "article": "Điều 107",
+          "clause": "2",
+          "point": "c",
+          "score": 15.922312725540596
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_108:khoan_2",
+          "article": "Điều 108",
+          "clause": "2",
+          "point": null,
+          "score": 15.905075068214103
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_3:diem_đ",
+          "article": "Điều 107",
+          "clause": "3",
+          "point": "đ",
+          "score": 14.861890577753611
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_1",
+          "article": "Điều 107",
+          "clause": "1",
+          "point": null,
+          "score": 13.442508887596722
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_3:diem_c",
+          "article": "Điều 107",
+          "clause": "3",
+          "point": "c",
+          "score": 13.352251322660539
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_3:diem_b",
+          "article": "Điều 107",
+          "clause": "3",
+          "point": "b",
+          "score": 13.340336372890759
+        }
+      ],
+      "latency_ms": 5.1
+    },
+    {
+      "id": "formal-088",
+      "question": "Thời giờ làm việc đối với công việc có tính chất đặc biệt được quy định thế nào?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_116",
+          "article": "Điều 116",
+          "clause": null,
+          "point": null,
+          "score": 18.560345613480152
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_115:khoan_3",
+          "article": "Điều 115",
+          "clause": "3",
+          "point": null,
+          "score": 13.69120895760775
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_25:khoan_4",
+          "article": "Điều 25",
+          "clause": "4",
+          "point": null,
+          "score": 12.12554210040582
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_25:khoan_2",
+          "article": "Điều 25",
+          "clause": "2",
+          "point": null,
+          "score": 10.735676998350208
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_25:khoan_3",
+          "article": "Điều 25",
+          "clause": "3",
+          "point": null,
+          "score": 10.53909865363147
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_25:khoan_1",
+          "article": "Điều 25",
+          "clause": "1",
+          "point": null,
+          "score": 10.30195823255264
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_107:khoan_3:diem_d",
+          "article": "Điều 107",
+          "clause": "3",
+          "point": "d",
+          "score": 9.82577901668633
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_113:khoan_1:diem_c",
+          "article": "Điều 113",
+          "clause": "1",
+          "point": "c",
+          "score": 9.327972800475031
+        }
+      ],
+      "latency_ms": 6.31
+    },
+    {
+      "id": "formal-093",
+      "question": "Tạm đình chỉ công việc được áp dụng trong trường hợp nào?",
+      "type": "condition",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_128:khoan_2",
+          "article": "Điều 128",
+          "clause": "2",
+          "point": null,
+          "score": 21.819295661424036
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_128:khoan_4",
+          "article": "Điều 128",
+          "clause": "4",
+          "point": null,
+          "score": 18.54486993844985
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_128:khoan_1",
+          "article": "Điều 128",
+          "clause": "1",
+          "point": null,
+          "score": 18.54045442037762
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_128:khoan_3",
+          "article": "Điều 128",
+          "clause": "3",
+          "point": null,
+          "score": 14.518776436627922
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_131",
+          "article": "Điều 131",
+          "clause": null,
+          "point": null,
+          "score": 9.870641538043026
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_30:khoan_1:diem_c",
+          "article": "Điều 30",
+          "clause": "1",
+          "point": "c",
+          "score": 8.667674734419322
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_31",
+          "article": "Điều 31",
+          "clause": null,
+          "point": null,
+          "score": 7.936965833536464
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_30:khoan_2",
+          "article": "Điều 30",
+          "clause": "2",
+          "point": null,
+          "score": 7.896885370935676
+        }
+      ],
+      "latency_ms": 4.65
+    },
+    {
+      "id": "formal-097",
+      "question": "Trách nhiệm tuân thủ an toàn vệ sinh lao động thuộc về ai?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714575
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_134:khoan_2",
+          "article": "Điều 134",
+          "clause": "2",
+          "point": null,
+          "score": 22.674513861243124
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_132",
+          "article": "Điều 132",
+          "clause": null,
+          "point": null,
+          "score": 19.929454669043185
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_134:khoan_1",
+          "article": "Điều 134",
+          "clause": "1",
+          "point": null,
+          "score": 16.16040186203748
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_133:khoan_1",
+          "article": "Điều 133",
+          "clause": "1",
+          "point": null,
+          "score": 15.786519690157919
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_215:khoan_2",
+          "article": "Điều 215",
+          "clause": "2",
+          "point": null,
+          "score": 15.388361868880132
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_100:khoan_1",
+          "article": "Điều 100",
+          "clause": "1",
+          "point": null,
+          "score": 13.745315260514387
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_133:khoan_2",
+          "article": "Điều 133",
+          "clause": "2",
+          "point": null,
+          "score": 12.83795043469943
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_214:khoan_3",
+          "article": "Điều 214",
+          "clause": "3",
+          "point": null,
+          "score": 12.60448771490601
+        }
+      ],
+      "latency_ms": 5.19
+    },
+    {
+      "id": "formal-100",
+      "question": "Người sử dụng lao động có trách nhiệm gì đối với lao động nữ?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.5
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_169:khoan_2",
+          "article": "Điều 169",
+          "clause": "2",
+          "point": null,
+          "score": 15.146265550089886
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_135:khoan_4",
+          "article": "Điều 135",
+          "clause": "4",
+          "point": null,
+          "score": 14.01840323306849
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_136:khoan_2",
+          "article": "Điều 136",
+          "clause": "2",
+          "point": null,
+          "score": 13.725589596952164
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_122:khoan_4:diem_d",
+          "article": "Điều 122",
+          "clause": "4",
+          "point": "d",
+          "score": 12.783962633631296
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_37:khoan_3",
+          "article": "Điều 37",
+          "clause": "3",
+          "point": null,
+          "score": 11.79429828597289
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_48:khoan_3:diem_b",
+          "article": "Điều 48",
+          "clause": "3",
+          "point": "b",
+          "score": 11.535769921649052
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_4:khoan_7",
+          "article": "Điều 4",
+          "clause": "7",
+          "point": null,
+          "score": 11.41900810809818
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_168:khoan_3",
+          "article": "Điều 168",
+          "clause": "3",
+          "point": null,
+          "score": 11.307925082881226
+        }
+      ],
+      "latency_ms": 4.8
+    },
+    {
+      "id": "formal-103",
+      "question": "Lao động được bảo đảm việc làm cũ sau khi nghỉ thai sản không?",
+      "type": "negation",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_140",
+          "article": "Điều 140",
+          "clause": null,
+          "point": null,
+          "score": 31.030961405622353
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_1",
+          "article": "Điều 139",
+          "clause": "1",
+          "point": null,
+          "score": 15.693183713738884
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_3",
+          "article": "Điều 139",
+          "clause": "3",
+          "point": null,
+          "score": 15.609101000262786
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_2",
+          "article": "Điều 139",
+          "clause": "2",
+          "point": null,
+          "score": 14.354314704548617
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_4",
+          "article": "Điều 139",
+          "clause": "4",
+          "point": null,
+          "score": 13.706314872250445
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_139:khoan_5",
+          "article": "Điều 139",
+          "clause": "5",
+          "point": null,
+          "score": 12.308092077463783
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_67:khoan_7",
+          "article": "Điều 67",
+          "clause": "7",
+          "point": null,
+          "score": 11.742365379307762
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_169:khoan_1",
+          "article": "Điều 169",
+          "clause": "1",
+          "point": null,
+          "score": 11.576079614455416
+        }
+      ],
+      "latency_ms": 5.77
+    },
+    {
+      "id": "formal-105",
+      "question": "Nguyên tắc sử dụng lao động chưa thành niên là gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_144:khoan_1",
+          "article": "Điều 144",
+          "clause": "1",
+          "point": null,
+          "score": 17.153769427429726
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_144:khoan_2",
+          "article": "Điều 144",
+          "clause": "2",
+          "point": null,
+          "score": 17.0714070884056
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_143:khoan_1",
+          "article": "Điều 143",
+          "clause": "1",
+          "point": null,
+          "score": 16.90233628052028
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_144:khoan_4",
+          "article": "Điều 144",
+          "clause": "4",
+          "point": null,
+          "score": 16.62812081157032
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_144:khoan_3",
+          "article": "Điều 144",
+          "clause": "3",
+          "point": null,
+          "score": 14.19199256876501
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_4:khoan_7",
+          "article": "Điều 4",
+          "clause": "7",
+          "point": null,
+          "score": 11.92743786497502
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_7",
+          "article": "Điều 8",
+          "clause": "7",
+          "point": null,
+          "score": 11.869404804226914
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_143:khoan_4",
+          "article": "Điều 143",
+          "clause": "4",
+          "point": null,
+          "score": 11.319394850453588
+        }
+      ],
+      "latency_ms": 4.54
+    },
+    {
+      "id": "formal-109",
+      "question": "Người lao động cao tuổi là ai?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_148:khoan_1",
+          "article": "Điều 148",
+          "clause": "1",
+          "point": null,
+          "score": 14.103925082270575
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_149:khoan_4",
+          "article": "Điều 149",
+          "clause": "4",
+          "point": null,
+          "score": 12.87597871120858
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_149:khoan_1",
+          "article": "Điều 149",
+          "clause": "1",
+          "point": null,
+          "score": 12.121878584130378
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_148:khoan_3",
+          "article": "Điều 148",
+          "clause": "3",
+          "point": null,
+          "score": 12.046372553349148
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_149:khoan_3",
+          "article": "Điều 149",
+          "clause": "3",
+          "point": null,
+          "score": 12.026713253274243
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_149:khoan_2",
+          "article": "Điều 149",
+          "clause": "2",
+          "point": null,
+          "score": 11.951926319440245
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_148:khoan_2",
+          "article": "Điều 148",
+          "clause": "2",
+          "point": null,
+          "score": 11.892893047919717
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_4:khoan_7",
+          "article": "Điều 4",
+          "clause": "7",
+          "point": null,
+          "score": 11.477606891985369
+        }
+      ],
+      "latency_ms": 3.53
+    },
+    {
+      "id": "formal-113",
+      "question": "Giấy phép lao động hết hiệu lực trong các trường hợp nào?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_156:khoan_1",
+          "article": "Điều 156",
+          "clause": "1",
+          "point": null,
+          "score": 20.333185328966422
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_156:khoan_5",
+          "article": "Điều 156",
+          "clause": "5",
+          "point": null,
+          "score": 19.777373401563796
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_156:khoan_8",
+          "article": "Điều 156",
+          "clause": "8",
+          "point": null,
+          "score": 19.167967990029652
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_156:khoan_4",
+          "article": "Điều 156",
+          "clause": "4",
+          "point": null,
+          "score": 18.743435319555747
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_156:khoan_2",
+          "article": "Điều 156",
+          "clause": "2",
+          "point": null,
+          "score": 18.03531387868301
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_156:khoan_3",
+          "article": "Điều 156",
+          "clause": "3",
+          "point": null,
+          "score": 17.682096924103412
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_156:khoan_6",
+          "article": "Điều 156",
+          "clause": "6",
+          "point": null,
+          "score": 16.1278726340382
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_34:khoan_12",
+          "article": "Điều 34",
+          "clause": "12",
+          "point": null,
+          "score": 15.421679324804924
+        }
+      ],
+      "latency_ms": 4.8
+    },
+    {
+      "id": "formal-114",
+      "question": "Người lao động khuyết tật bị sử dụng như thế nào là vi phạm?",
+      "type": "negation",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_160:khoan_1",
+          "article": "Điều 160",
+          "clause": "1",
+          "point": null,
+          "score": 18.45087946084781
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_160:khoan_2",
+          "article": "Điều 160",
+          "clause": "2",
+          "point": null,
+          "score": 16.457571314070364
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_158",
+          "article": "Điều 158",
+          "clause": null,
+          "point": null,
+          "score": 15.94125240724544
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_159:khoan_2",
+          "article": "Điều 159",
+          "clause": "2",
+          "point": null,
+          "score": 14.943291907499757
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_159:khoan_1",
+          "article": "Điều 159",
+          "clause": "1",
+          "point": null,
+          "score": 14.729487061547328
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_217:khoan_2",
+          "article": "Điều 217",
+          "clause": "2",
+          "point": null,
+          "score": 11.504818438190659
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_4:khoan_7",
+          "article": "Điều 4",
+          "clause": "7",
+          "point": null,
+          "score": 11.477606891985369
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_217:khoan_1",
+          "article": "Điều 217",
+          "clause": "1",
+          "point": null,
+          "score": 11.176272584577937
+        }
+      ],
+      "latency_ms": 4.12
+    },
+    {
+      "id": "formal-118",
+      "question": "Người sử dụng lao động có bắt buộc tham gia bảo hiểm xã hội không?",
+      "type": "negation",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_168:khoan_3",
+          "article": "Điều 168",
+          "clause": "3",
+          "point": null,
+          "score": 19.90849169718705
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_168:khoan_1",
+          "article": "Điều 168",
+          "clause": "1",
+          "point": null,
+          "score": 18.63183762884978
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_168:khoan_2",
+          "article": "Điều 168",
+          "clause": "2",
+          "point": null,
+          "score": 14.232381667173877
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_163:khoan_2",
+          "article": "Điều 163",
+          "clause": "2",
+          "point": null,
+          "score": 13.333957166692816
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_102:khoan_3",
+          "article": "Điều 102",
+          "clause": "3",
+          "point": null,
+          "score": 12.334025640243073
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_19:khoan_2",
+          "article": "Điều 19",
+          "clause": "2",
+          "point": null,
+          "score": 12.26577572913254
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_30:khoan_1:diem_c",
+          "article": "Điều 30",
+          "clause": "1",
+          "point": "c",
+          "score": 9.791487435837979
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_1:diem_d",
+          "article": "Điều 188",
+          "clause": "1",
+          "point": "d",
+          "score": 9.706491635390178
+        }
+      ],
+      "latency_ms": 4.02
+    },
+    {
+      "id": "formal-124",
+      "question": "Nguyên tắc giải quyết tranh chấp lao động là gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_180:khoan_4",
+          "article": "Điều 180",
+          "clause": "4",
+          "point": null,
+          "score": 13.44170845525121
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_180:khoan_1",
+          "article": "Điều 180",
+          "clause": "1",
+          "point": null,
+          "score": 13.133127125968365
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_180:khoan_5",
+          "article": "Điều 180",
+          "clause": "5",
+          "point": null,
+          "score": 12.74156552901583
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_180:khoan_2",
+          "article": "Điều 180",
+          "clause": "2",
+          "point": null,
+          "score": 12.420812268918784
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_180:khoan_3",
+          "article": "Điều 180",
+          "clause": "3",
+          "point": null,
+          "score": 11.507321011810472
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_194:khoan_3",
+          "article": "Điều 194",
+          "clause": "3",
+          "point": null,
+          "score": 10.774173758926432
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_197:khoan_4",
+          "article": "Điều 197",
+          "clause": "4",
+          "point": null,
+          "score": 10.681167749448775
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_190:khoan_2",
+          "article": "Điều 190",
+          "clause": "2",
+          "point": null,
+          "score": 10.625976218387832
+        }
+      ],
+      "latency_ms": 4.35
+    },
+    {
+      "id": "formal-125",
+      "question": "Hòa giải viên lao động do ai bổ nhiệm?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_184:khoan_1",
+          "article": "Điều 184",
+          "clause": "1",
+          "point": null,
+          "score": 21.45361680681605
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_184:khoan_2",
+          "article": "Điều 184",
+          "clause": "2",
+          "point": null,
+          "score": 19.255125226210282
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_4",
+          "article": "Điều 188",
+          "clause": "4",
+          "point": null,
+          "score": 14.037852874086873
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_2",
+          "article": "Điều 188",
+          "clause": "2",
+          "point": null,
+          "score": 12.685286816434534
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_3",
+          "article": "Điều 188",
+          "clause": "3",
+          "point": null,
+          "score": 11.158430029427901
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_1:diem_c",
+          "article": "Điều 188",
+          "clause": "1",
+          "point": "c",
+          "score": 10.919171709935718
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_7:diem_b",
+          "article": "Điều 188",
+          "clause": "7",
+          "point": "b",
+          "score": 10.892905091772969
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_188:khoan_1:diem_b",
+          "article": "Điều 188",
+          "clause": "1",
+          "point": "b",
+          "score": 10.868771081075975
+        }
+      ],
+      "latency_ms": 4.1
+    },
+    {
+      "id": "formal-131",
+      "question": "Trình tự tiến hành đình công gồm những bước nào?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_200:khoan_3",
+          "article": "Điều 200",
+          "clause": "3",
+          "point": null,
+          "score": 13.052452963208378
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_204:khoan_3",
+          "article": "Điều 204",
+          "clause": "3",
+          "point": null,
+          "score": 11.59684689814403
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_200:khoan_2",
+          "article": "Điều 200",
+          "clause": "2",
+          "point": null,
+          "score": 8.674590786404792
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_204:khoan_5",
+          "article": "Điều 204",
+          "clause": "5",
+          "point": null,
+          "score": 8.51981876794388
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_202:khoan_2:diem_c",
+          "article": "Điều 202",
+          "clause": "2",
+          "point": "c",
+          "score": 8.445183083912093
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_200:khoan_1",
+          "article": "Điều 200",
+          "clause": "1",
+          "point": null,
+          "score": 8.281816361562404
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_100:khoan_1",
+          "article": "Điều 100",
+          "clause": "1",
+          "point": null,
+          "score": 7.410682150912893
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_201:khoan_4",
+          "article": "Điều 201",
+          "clause": "4",
+          "point": null,
+          "score": 7.150269041997929
+        }
+      ],
+      "latency_ms": 4.43
+    },
+    {
+      "id": "formal-132",
+      "question": "Khi nào cuộc đình công được coi là bất hợp pháp?",
+      "type": "condition",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.5
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_217:khoan_2",
+          "article": "Điều 217",
+          "clause": "2",
+          "point": null,
+          "score": 18.686481921587763
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_203:khoan_3:diem_c",
+          "article": "Điều 203",
+          "clause": "3",
+          "point": "c",
+          "score": 16.848802203506143
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_204:khoan_6",
+          "article": "Điều 204",
+          "clause": "6",
+          "point": null,
+          "score": 11.594730156701795
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_204:khoan_5",
+          "article": "Điều 204",
+          "clause": "5",
+          "point": null,
+          "score": 11.589241194962586
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_204:khoan_1",
+          "article": "Điều 204",
+          "clause": "1",
+          "point": null,
+          "score": 11.26003213582976
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_204:khoan_4",
+          "article": "Điều 204",
+          "clause": "4",
+          "point": null,
+          "score": 10.991242205627263
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_203:khoan_2:diem_b",
+          "article": "Điều 203",
+          "clause": "2",
+          "point": "b",
+          "score": 10.888855204067381
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_204:khoan_2",
+          "article": "Điều 204",
+          "clause": "2",
+          "point": null,
+          "score": 10.704219934493977
+        }
+      ],
+      "latency_ms": 3.97
+    },
+    {
+      "id": "formal-136",
+      "question": "Hành vi nào bị nghiêm cấm trong và sau đình công?",
+      "type": "negation",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_208:khoan_6",
+          "article": "Điều 208",
+          "clause": "6",
+          "point": null,
+          "score": 19.15194541314513
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_208:khoan_5",
+          "article": "Điều 208",
+          "clause": "5",
+          "point": null,
+          "score": 17.824399738402164
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_208:khoan_3",
+          "article": "Điều 208",
+          "clause": "3",
+          "point": null,
+          "score": 17.178507060787215
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_208:khoan_1",
+          "article": "Điều 208",
+          "clause": "1",
+          "point": null,
+          "score": 16.533354602581863
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_208:khoan_2",
+          "article": "Điều 208",
+          "clause": "2",
+          "point": null,
+          "score": 15.82727331209607
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_208:khoan_4",
+          "article": "Điều 208",
+          "clause": "4",
+          "point": null,
+          "score": 15.08568317544696
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_1",
+          "article": "Điều 8",
+          "clause": "1",
+          "point": null,
+          "score": 12.399650985386213
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_8:khoan_3",
+          "article": "Điều 8",
+          "clause": "3",
+          "point": null,
+          "score": 12.02934228952928
+        }
+      ],
+      "latency_ms": 5.15
+    },
+    {
+      "id": "formal-137",
+      "question": "Nội dung quản lý nhà nước về lao động gồm những gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_212:khoan_6",
+          "article": "Điều 212",
+          "clause": "6",
+          "point": null,
+          "score": 13.375522113655055
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_212:khoan_1",
+          "article": "Điều 212",
+          "clause": "1",
+          "point": null,
+          "score": 12.86762453376532
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_213:khoan_1",
+          "article": "Điều 213",
+          "clause": "1",
+          "point": null,
+          "score": 11.903320721423597
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_213:khoan_2",
+          "article": "Điều 213",
+          "clause": "2",
+          "point": null,
+          "score": 11.664039959778798
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_213:khoan_4",
+          "article": "Điều 213",
+          "clause": "4",
+          "point": null,
+          "score": 11.663889642978187
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_212:khoan_5",
+          "article": "Điều 212",
+          "clause": "5",
+          "point": null,
+          "score": 11.540804296630181
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_212:khoan_3",
+          "article": "Điều 212",
+          "clause": "3",
+          "point": null,
+          "score": 11.33010318390622
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_213:khoan_3",
+          "article": "Điều 213",
+          "clause": "3",
+          "point": null,
+          "score": 10.589472906543477
+        }
+      ],
+      "latency_ms": 4.9
+    },
+    {
+      "id": "formal-139",
+      "question": "Thanh tra lao động có những quyền gì?",
+      "type": "factual",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_216",
+          "article": "Điều 216",
+          "clause": null,
+          "point": null,
+          "score": 12.720163915882246
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_215:khoan_1",
+          "article": "Điều 215",
+          "clause": "1",
+          "point": null,
+          "score": 11.144141497656253
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_214:khoan_1",
+          "article": "Điều 214",
+          "clause": "1",
+          "point": null,
+          "score": 10.533361840790217
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_215:khoan_2",
+          "article": "Điều 215",
+          "clause": "2",
+          "point": null,
+          "score": 10.140284411316427
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_214:khoan_2",
+          "article": "Điều 214",
+          "clause": "2",
+          "point": null,
+          "score": 8.797119540738382
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_214:khoan_5",
+          "article": "Điều 214",
+          "clause": "5",
+          "point": null,
+          "score": 8.621837988193215
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_214:khoan_4",
+          "article": "Điều 214",
+          "clause": "4",
+          "point": null,
+          "score": 8.572782969641878
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_214:khoan_3",
+          "article": "Điều 214",
+          "clause": "3",
+          "point": null,
+          "score": 8.26972210950677
+        }
+      ],
+      "latency_ms": 2.77
+    },
+    {
+      "id": "formal-142",
+      "question": "Bộ luật Lao động 2019 có hiệu lực từ ngày nào?",
+      "type": "numeric",
+      "retrieval": {
+        "hit": 1,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      "retrieved": [
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_220:khoan_1",
+          "article": "Điều 220",
+          "clause": "1",
+          "point": null,
+          "score": 18.860358670447948
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_78:khoan_1",
+          "article": "Điều 78",
+          "clause": "1",
+          "point": null,
+          "score": 16.22911637248859
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_23",
+          "article": "Điều 23",
+          "clause": null,
+          "point": null,
+          "score": 16.111027679923428
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_121",
+          "article": "Điều 121",
+          "clause": null,
+          "point": null,
+          "score": 15.687377303192855
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_220:khoan_2",
+          "article": "Điều 220",
+          "clause": "2",
+          "point": null,
+          "score": 13.204609586640615
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_79:khoan_1",
+          "article": "Điều 79",
+          "clause": "1",
+          "point": null,
+          "score": 12.78319721544855
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_10:khoan_1",
+          "article": "Điều 10",
+          "clause": "1",
+          "point": null,
+          "score": 12.385135300593262
+        },
+        {
+          "chunk_id": "labor_2019:8115d4e354194ce4:dieu_162:khoan_2",
+          "article": "Điều 162",
+          "clause": "2",
+          "point": null,
+          "score": 11.848526807165145
+        }
+      ],
+      "latency_ms": 4.49
+    }
+  ],
+  "summary": {
+    "hit": 0.9714285714285714,
+    "hit_samples": 35,
+    "recall": 0.9714285714285714,
+    "recall_samples": 35,
+    "mrr": 0.8357142857142857,
+    "mrr_samples": 35,
+    "ndcg": 0.8701255877816921,
+    "ndcg_samples": 35,
+    "count": 35,
+    "errors": 0,
+    "p50_ms": 4.65,
+    "p95_ms": 6.31
+  },
+  "by_type": {
+    "numeric": {
+      "hit": 1.0,
+      "hit_samples": 1,
+      "recall": 1.0,
+      "recall_samples": 1,
+      "mrr": 1.0,
+      "mrr_samples": 1,
+      "ndcg": 1.0,
+      "ndcg_samples": 1,
+      "count": 1,
+      "errors": 0,
+      "p50_ms": 4.49,
+      "p95_ms": 4.49
+    },
+    "condition": {
+      "hit": 1.0,
+      "hit_samples": 2,
+      "recall": 1.0,
+      "recall_samples": 2,
+      "mrr": 0.6666666666666666,
+      "mrr_samples": 2,
+      "ndcg": 0.75,
+      "ndcg_samples": 2,
+      "count": 2,
+      "errors": 0,
+      "p50_ms": 4.3100000000000005,
+      "p95_ms": 4.65
+    },
+    "negation": {
+      "hit": 0.8333333333333334,
+      "hit_samples": 6,
+      "recall": 0.8333333333333334,
+      "recall_samples": 6,
+      "mrr": 0.8333333333333334,
+      "mrr_samples": 6,
+      "ndcg": 0.8333333333333334,
+      "ndcg_samples": 6,
+      "count": 6,
+      "errors": 0,
+      "p50_ms": 5.29,
+      "p95_ms": 5.77
+    },
+    "comparison": {
+      "hit": 1.0,
+      "hit_samples": 1,
+      "recall": 1.0,
+      "recall_samples": 1,
+      "mrr": 1.0,
+      "mrr_samples": 1,
+      "ndcg": 1.0,
+      "ndcg_samples": 1,
+      "count": 1,
+      "errors": 0,
+      "p50_ms": 5.94,
+      "p95_ms": 5.94
+    },
+    "factual": {
+      "hit": 1.0,
+      "hit_samples": 25,
+      "recall": 1.0,
+      "recall_samples": 25,
+      "mrr": 0.8366666666666667,
+      "mrr_samples": 25,
+      "ndcg": 0.878175822894369,
+      "ndcg_samples": 25,
+      "count": 25,
+      "errors": 0,
+      "p50_ms": 4.63,
+      "p95_ms": 6.31
+    }
+  }
+}

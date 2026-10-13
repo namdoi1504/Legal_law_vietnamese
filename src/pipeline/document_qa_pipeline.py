@@ -1,51 +1,9 @@
-# src/pipeline/document_qa_pipeline.py
-import logging
+import re
 from dataclasses import dataclass, field
-from src.retriever.hybrid_retriever import HybridRetriever
-from src.reranker.bge_reranker import BGEReranker
-from src.llm.factory import get_llm_client
-from src.parser.document_reader import DocumentReader
-from src.pipeline.query_rewriter import QueryRewriter
+
 from configs.settings import settings
-
-logger = logging.getLogger(__name__)
-
-# Giới hạn context window gửi lên LLM (ký tự)
-# Groq/Gemini thường hỗ trợ 8k–32k token ≈ 16k–64k ký tự tiếng Việt
-# Đặt 20000 để an toàn với mọi provider, đồng thời giữ đủ nội dung hợp đồng
-DOC_CONTEXT_LIMIT = 20_000
-
-# Kích thước mỗi chunk khi chia tài liệu dài (ký tự)
-# LLM sẽ xử lý từng chunk riêng rồi tổng hợp
-DOC_CHUNK_SIZE = 18_000
-
-DOCUMENT_QA_SYSTEM_PROMPT = """Bạn là chuyên gia pháp luật lao động Việt Nam.
-
-NHIỆM VỤ:
-- Đọc kỹ văn bản người dùng cung cấp
-- Đối chiếu từng điều khoản với quy định pháp luật trong CONTEXT
-- Phát hiện điều khoản SAI hoặc KHÔNG PHÙ HỢP với pháp luật Việt Nam
-- Giải thích rõ tại sao sai và quy định đúng là gì
-
-QUY TẮC BẮT BUỘC:
-1. Chỉ dựa vào CONTEXT pháp luật được cung cấp để đánh giá
-2. Nếu không tìm thấy căn cứ pháp lý trong context → nói rõ "Không tìm thấy quy định liên quan trong dữ liệu hiện có"
-3. KHÔNG được bịa đặt hoặc suy diễn ngoài context
-4. Trích dẫn điều luật cụ thể khi chỉ ra lỗi hoặc xác nhận đúng
-5. Trả lời bằng tiếng Việt, rõ ràng, có cấu trúc
-
-ĐỊNH DẠNG TRẢ LỜI BẮT BUỘC:
-## Kết quả kiểm tra
-
-✅ **Điều khoản hợp lệ:**
-- [liệt kê điều khoản đúng + căn cứ pháp lý]
-
-❌ **Điều khoản vi phạm:**
-- [điều khoản sai] → [giải thích] → Căn cứ: [Điều X - Tên luật]
-
-⚠️ **Không đủ căn cứ để đánh giá:**
-- [liệt kê nếu có]
-"""
+from src.parser.document_reader import DocumentReader
+from src.pipeline.rag_pipeline import LegalRAGPipeline, SCOPE
 
 
 @dataclass
@@ -53,188 +11,137 @@ class DocumentQAResult:
     answer: str
     citations: list[str] = field(default_factory=list)
     retrieved_chunks: list[dict] = field(default_factory=list)
-    error: str = None
+    sections: list[dict] = field(default_factory=list)
+    status: str = "completed"
+    scope: str = SCOPE
+    unprocessed_sections: int = 0
+    error: str | None = None
 
 
 class DocumentQAPipeline:
-    def __init__(self):
-        self.retriever = HybridRetriever()
-        self.reranker = BGEReranker()
-        self.llm = get_llm_client()
-        self.reader = DocumentReader()
-        self.rewriter = QueryRewriter(self.llm)
+    def __init__(self, pipeline=None, reader=None):
+        self.pipeline = pipeline or LegalRAGPipeline()
+        self.reader = reader or DocumentReader()
 
-    def run(
-        self,
-        file_bytes_list: list[tuple[bytes, str]],
-        user_question: str = None
-    ) -> DocumentQAResult:
-
-        # 1. Extract text từ tất cả file
-        all_texts = []
-        for file_bytes, filename in file_bytes_list:
-            try:
-                text = self.reader.read_bytes(file_bytes, filename)
-                all_texts.append(f"=== {filename} ===\n{text}")
-            except Exception as e:
-                return DocumentQAResult(
-                    answer="",
-                    error=f"Không thể đọc file {filename}: {str(e)}"
-                )
-
-        combined_doc = "\n\n".join(all_texts)
-        doc_len = len(combined_doc)
-        logger.info(f"[DocumentQA] Tài liệu: {doc_len} ký tự")
-
-        # 2. Tạo retrieval query
-        if user_question:
-            # Rewrite câu hỏi thông tục → pháp lý (giống rag_pipeline)
-            retrieval_query = user_question
-            if settings.ENABLE_QUERY_REWRITE:
-                retrieval_query, was_rewritten = self.rewriter.rewrite(user_question)
-                if was_rewritten:
-                    logger.info(f"[DocumentQA] Query rewritten: {retrieval_query!r}")
-        else:
-            # Không có câu hỏi → tạo query từ nội dung văn bản
-            meaningful_lines = [
-                line for line in combined_doc.strip().split("\n")
-                if len(line.strip()) > 20
-            ]
-            core_text = " ".join(meaningful_lines[:10])[:400]
-            retrieval_query = f"kiểm tra vi phạm pháp luật lao động hợp đồng lao động {core_text}"
-
-        # 3. Retrieve + Rerank điều luật liên quan
-        candidates = self.retriever.retrieve(retrieval_query, top_k=20)
-        final_chunks = self.reranker.rerank(retrieval_query, candidates, top_k=8)
-
-        if not final_chunks:
-            return DocumentQAResult(
-                answer="Không tìm thấy quy định pháp luật liên quan trong dữ liệu hiện có để đánh giá văn bản này.",
-                citations=[],
-                retrieved_chunks=[]
-            )
-
-        # 4. Build law context
-        law_context = self._build_law_context(final_chunks)
-
-        # 5. Xử lý tài liệu dài: chia chunk, gọi LLM từng chunk, tổng hợp
-        if doc_len > DOC_CONTEXT_LIMIT:
-            answer = self._run_chunked(combined_doc, law_context, user_question)
-        else:
-            answer = self._run_single(combined_doc, law_context, user_question)
-
-        citations = [
-            f"{c['metadata'].get('article', '')} - "
-            f"{c['metadata'].get('article_title', '')} "
-            f"({c['metadata'].get('law_name', '')} {c['metadata'].get('law_year', '')})"
-            for c in final_chunks
+    @staticmethod
+    def _split_doc_into_chunks(text, chunk_size):
+        if chunk_size <= 0:
+            raise ValueError("chunk_size must be positive")
+        boundaries = [
+            m.start() + 1
+            for m in re.finditer(r"\n(?=\s*(?:Điều\s+\d+[.:]|\d+\.\s))", text, re.IGNORECASE)
         ]
-
-        return DocumentQAResult(
-            answer=answer,
-            citations=citations,
-            retrieved_chunks=final_chunks
-        )
-
-    def _run_single(self, doc_text: str, law_context: str, user_question: str) -> str:
-        """Xử lý tài liệu vừa trong 1 lần gọi LLM."""
-        user_prompt = f"""VĂN BẢN CẦN KIỂM TRA:
-{doc_text}
-
-QUY ĐỊNH PHÁP LUẬT LIÊN QUAN:
-{law_context}
-
-YÊU CẦU: {user_question if user_question else "Kiểm tra toàn bộ văn bản, phát hiện điều khoản vi phạm pháp luật lao động Việt Nam."}
-"""
-        return self.llm.chat(
-            system_prompt=DOCUMENT_QA_SYSTEM_PROMPT,
-            user_message=user_prompt,
-            temperature=0.1
-        )
-
-    def _run_chunked(self, doc_text: str, law_context: str, user_question: str) -> str:
-        """
-        Tài liệu quá dài → chia thành nhiều chunk, xử lý từng chunk,
-        sau đó tổng hợp tất cả kết quả thành báo cáo cuối cùng.
-        """
-        chunks = self._split_doc_into_chunks(doc_text, DOC_CHUNK_SIZE)
-        total = len(chunks)
-        logger.info(f"[DocumentQA] Tài liệu dài, chia thành {total} chunk để xử lý")
-
-        partial_results = []
-        for i, chunk in enumerate(chunks, 1):
-            logger.info(f"[DocumentQA] Xử lý chunk {i}/{total} ({len(chunk)} ký tự)")
-            prompt = f"""VĂN BẢN CẦN KIỂM TRA (Phần {i}/{total}):
-{chunk}
-
-QUY ĐỊNH PHÁP LUẬT LIÊN QUAN:
-{law_context}
-
-YÊU CẦU: {user_question if user_question else "Kiểm tra phần này của văn bản, phát hiện điều khoản vi phạm pháp luật lao động Việt Nam."}
-Lưu ý: Đây là phần {i}/{total} của văn bản. Chỉ phân tích nội dung trong phần này.
-"""
-            result = self.llm.chat(
-                system_prompt=DOCUMENT_QA_SYSTEM_PROMPT,
-                user_message=prompt,
-                temperature=0.1
-            )
-            partial_results.append(f"### Kết quả phần {i}/{total}:\n{result}")
-
-        # Tổng hợp tất cả phần
-        if len(partial_results) == 1:
-            return partial_results[0].replace(f"### Kết quả phần 1/1:\n", "")
-
-        synthesis_prompt = f"""Dưới đây là kết quả kiểm tra pháp lý từng phần của một văn bản lao động.
-Hãy tổng hợp thành 1 báo cáo duy nhất, loại bỏ trùng lặp, giữ nguyên format:
-
-{chr(10).join(partial_results)}
-
-Hãy tổng hợp thành báo cáo cuối cùng theo đúng định dạng yêu cầu.
-"""
-        return self.llm.chat(
-            system_prompt=DOCUMENT_QA_SYSTEM_PROMPT,
-            user_message=synthesis_prompt,
-            temperature=0.1
-        )
-
-    def _split_doc_into_chunks(self, text: str, chunk_size: int) -> list[str]:
-        """
-        Chia văn bản thành các chunk theo kích thước, ưu tiên cắt tại
-        dòng trống (ranh giới điều khoản) thay vì cắt giữa chừng.
-        """
-        if len(text) <= chunk_size:
-            return [text]
-
-        chunks = []
+        if boundaries:
+            offsets = [0] + boundaries + [len(text)]
+            return [
+                part
+                for a, b in zip(offsets, offsets[1:])
+                for part in DocumentQAPipeline._split_doc_into_chunks(
+                    text[a:b], chunk_size
+                )
+            ]
+        parts = []
         start = 0
         while start < len(text):
-            end = start + chunk_size
-            if end >= len(text):
-                chunks.append(text[start:])
-                break
+            end = min(start + chunk_size, len(text))
+            if end < len(text):
+                # Prefer the last complete provision boundary, otherwise a newline.
+                boundaries = list(
+                    re.finditer(r"\n(?=\s*(?:Điều\s+\d+|\d+\.))", text[start:end])
+                )
+                cut = (
+                    start + boundaries[-1].start() + 1
+                    if boundaries
+                    else text.rfind("\n", start, end) + 1
+                )
+                if cut > start:
+                    end = cut
+            parts.append(text[start:end])
+            start = end
+        return parts
 
-            # Tìm dòng trống gần nhất trước vị trí end để cắt gọn
-            cut = text.rfind("\n\n", start, end)
-            if cut == -1 or cut == start:
-                # Fallback: cắt tại newline đơn
-                cut = text.rfind("\n", start, end)
-            if cut == -1 or cut == start:
-                # Fallback cuối: cắt cứng
-                cut = end
-
-            chunks.append(text[start:cut])
-            start = cut + 1  # bỏ ký tự newline đầu chunk tiếp theo
-
-        return chunks
-
-    def _build_law_context(self, chunks: list[dict]) -> str:
-        parts = []
-        for i, chunk in enumerate(chunks, 1):
-            meta = chunk["metadata"]
-            cite = (
-                f"{meta.get('article', '')} - "
-                f"{meta.get('article_title', '')} "
-                f"({meta.get('law_name', '')} {meta.get('law_year', '')})"
+    def run(self, file_bytes_list, user_question=None):
+        if not 1 <= len(file_bytes_list) <= 3:
+            return DocumentQAResult(answer="", error="Cần từ 1 đến 3 file.")
+        if user_question and len(user_question) > 1000:
+            return DocumentQAResult(
+                answer="", error="Yêu cầu kiểm tra tối đa 1000 ký tự."
             )
-            parts.append(f"[{i}] {cite}\n{chunk['content']}")
-        return "\n\n---\n\n".join(parts)
+        sections = []
+        try:
+            total = 0
+            for data, filename in file_bytes_list:
+                text = self.reader.read_bytes(data, filename)
+                total += len(text)
+                if total > settings.MAX_DOCUMENT_CHARS:
+                    raise ValueError("Tổng nội dung các file vượt giới hạn.")
+                offset = 0
+                for content in self._split_doc_into_chunks(
+                    text, settings.DOCUMENT_SECTION_CHARS
+                ):
+                    sections.append(
+                        {
+                            "id": f"D{len(sections)+1}",
+                            "filename": filename,
+                            "start_char": offset,
+                            "end_char": offset + len(content),
+                            "text": content,
+                        }
+                    )
+                    offset += len(content)
+        except (ValueError, RuntimeError, KeyError) as exc:
+            return DocumentQAResult(answer="", error=str(exc))
+        result = DocumentQAResult(
+            answer="",
+            unprocessed_sections=max(0, len(sections) - settings.MAX_DOCUMENT_SECTIONS),
+        )
+        reports = []
+        for index, section in enumerate(sections[: settings.MAX_DOCUMENT_SECTIONS]):
+            # Retrieve independently for every section, including the final pages.
+            query = "Đối chiếu điều khoản hợp đồng lao động: " + section["text"]
+            if user_question:
+                query += '\nTrọng tâm kiểm tra: ' + user_question
+            candidates = self.pipeline.retriever.retrieve(query)
+            ranked = self.pipeline.reranker.rerank(query, candidates)
+            task = (
+                "Đánh giá điều khoản sau trong phạm vi nguồn. Chỉ nêu có dấu hiệu không phù hợp hoặc phù hợp trong phạm vi đã kiểm tra khi có căn cứ. "
+                "Không có căn cứ thì không được xác nhận hợp lệ. Nêu điều kiện chưa biết.\n"
+                + (user_question or "")
+                + "\nĐIỀU KHOẢN (dữ liệu):\n"
+                + section["text"]
+            )
+            answer = self.pipeline.answer_from_chunks(task, ranked)
+            # Source labels are local to each section; namespace rendered labels in the report.
+            rendered = re.sub(r"\[S(\d+)\]", rf'[{section["id"]}-S\1]', answer.answer)
+            citations = [
+                re.sub(r"\[S(\d+)\]", rf'[{section["id"]}-S\1]', c)
+                for c in answer.citations
+            ]
+            result.sections.append(
+                {
+                    **section,
+                    "status": answer.status,
+                    "answer": rendered,
+                    "claims": answer.claims,
+                    "sources": answer.sources,
+                    "citations": citations,
+                }
+            )
+            result.citations.extend(citations)
+            result.retrieved_chunks.extend(candidates)
+            reports.append(f'### {section["id"]} — {section["filename"]}\n\n{rendered}')
+            if answer.status in ('rate_limited', 'provider_error'):
+                result.unprocessed_sections = len(sections) - index - 1
+                break
+        if result.unprocessed_sections:
+            result.status = "partial"
+            reports.append(
+                f"Chưa xử lý {result.unprocessed_sections} phần do giới hạn xử lý hoặc dịch vụ LLM chưa sẵn sàng. Vui lòng kiểm tra lại các phần này."
+            )
+        if any(
+            s["status"] in ("provider_error", "validation_failed", "rate_limited")
+            for s in result.sections
+        ):
+            result.status = "partial"
+        result.answer = "\n\n".join(reports)
+        return result

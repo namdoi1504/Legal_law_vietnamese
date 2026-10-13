@@ -1,0 +1,255 @@
+{
+  "corpus_version": "6aa05971e2a6bc143a6dea7dcc4b1540d5834bf7dadf0e0b3d3b3fc9f2b5d945",
+  "all_articles": 220,
+  "chunk_count": 873,
+  "duplicate_ids": 0,
+  "structural_sample": [
+    {
+      "article": 3,
+      "title": "Giải thích từ ngữ",
+      "chunks": 9,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 14,
+      "title": "Hình thức hợp đồng lao động",
+      "chunks": 2,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 20,
+      "title": "Loại hợp đồng lao động",
+      "chunks": 5,
+      "points": [
+        "a",
+        "b",
+        "a",
+        "b",
+        "c"
+      ],
+      "empty": false
+    },
+    {
+      "article": 21,
+      "title": "Nội dung hợp đồng lao động",
+      "chunks": 14,
+      "points": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "đ",
+        "e",
+        "g",
+        "h",
+        "i",
+        "k"
+      ],
+      "empty": false
+    },
+    {
+      "article": 25,
+      "title": "Thời gian thử việc",
+      "chunks": 4,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 26,
+      "title": "Tiền lương thử việc",
+      "chunks": 1,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 35,
+      "title": "Quyền đơn phương chấm dứt hợp đồng lao động của người lao động",
+      "chunks": 11,
+      "points": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "a",
+        "b",
+        "c",
+        "d",
+        "đ",
+        "e",
+        "g"
+      ],
+      "empty": false
+    },
+    {
+      "article": 36,
+      "title": "Quyền đơn phương chấm dứt hợp đồng lao động của người sử dụng lao động",
+      "chunks": 12,
+      "points": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "đ",
+        "e",
+        "g",
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "empty": false
+    },
+    {
+      "article": 37,
+      "title": "Trường hợp người sử dụng lao động không được thực hiện quyền đơn phương chấm dứt hợp đồng lao động",
+      "chunks": 3,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 41,
+      "title": "Nghĩa vụ của người sử dụng lao động khi đơn phương chấm dứt hợp đồng lao động trái pháp luật",
+      "chunks": 3,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 46,
+      "title": "Trợ cấp thôi việc",
+      "chunks": 4,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 98,
+      "title": "Tiền lương làm thêm giờ, làm việc vào ban đêm",
+      "chunks": 6,
+      "points": [
+        "a",
+        "b",
+        "c"
+      ],
+      "empty": false
+    },
+    {
+      "article": 107,
+      "title": "Làm thêm giờ",
+      "chunks": 11,
+      "points": [
+        "a",
+        "b",
+        "c",
+        "a",
+        "b",
+        "c",
+        "d",
+        "đ"
+      ],
+      "empty": false
+    },
+    {
+      "article": 112,
+      "title": "Nghỉ lễ, tết",
+      "chunks": 8,
+      "points": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "đ",
+        "e"
+      ],
+      "empty": false
+    },
+    {
+      "article": 113,
+      "title": "Nghỉ hằng năm",
+      "chunks": 9,
+      "points": [
+        "a",
+        "b",
+        "c"
+      ],
+      "empty": false
+    },
+    {
+      "article": 122,
+      "title": "Nguyên tắc, trình tự, thủ tục xử lý kỷ luật lao động",
+      "chunks": 12,
+      "points": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "empty": false
+    },
+    {
+      "article": 125,
+      "title": "Áp dụng hình thức xử lý kỷ luật sa thải",
+      "chunks": 4,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 127,
+      "title": "Các hành vi bị nghiêm cấm khi xử lý kỷ luật lao động",
+      "chunks": 3,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 137,
+      "title": "Bảo vệ thai sản",
+      "chunks": 5,
+      "points": [
+        "a",
+        "b"
+      ],
+      "empty": false
+    },
+    {
+      "article": 139,
+      "title": "Nghỉ thai sản",
+      "chunks": 5,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 169,
+      "title": "Tuổi nghỉ hưu",
+      "chunks": 5,
+      "points": [],
+      "empty": false
+    },
+    {
+      "article": 219,
+      "title": "Sửa đổi, bổ sung một số điều của các luật có liên quan đến lao động",
+      "chunks": 5,
+      "points": [
+        "a",
+        "b",
+        "c",
+        "a",
+        "b"
+      ],
+      "empty": false
+    },
+    {
+      "article": 220,
+      "title": "Hiệu lực thi hành",
+      "chunks": 3,
+      "points": [],
+      "empty": false
+    }
+  ],
+  "limitations": [
+    "Structural inspection only; independent legal review and current legal validity remain pending."
+  ]
+}

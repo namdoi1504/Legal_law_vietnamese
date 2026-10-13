@@ -1,0 +1,329 @@
+{
+  "mode": "legacy_bm25",
+  "python": "3.11.9",
+  "dataset_sha256": "efc46bd7fefc305912d4ec21b1ed9274f8b5e937bf5f65e07b89194a92448d4f",
+  "corpus_sha256": "4b689eafb7786b0fbd109e93c45c37e5c57545b3ca24efde0877d27fc7df9718",
+  "hit_rate_at_8": 0.6666666666666666,
+  "count": 15,
+  "cases": [
+    {
+      "id": "legacy-01",
+      "question": "nghỉ đẻ được mấy tháng",
+      "expected_articles": [
+        "Điều 139"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 115",
+        "Điều 139",
+        "Điều 137",
+        "Điều 113",
+        "Điều 111",
+        "Điều 169",
+        "Điều 37",
+        "Điều 139"
+      ],
+      "hit": true,
+      "latency_ms": 835.2174999999988
+    },
+    {
+      "id": "legacy-02",
+      "question": "bị đuổi việc oan thì được đền bao nhiêu tiền",
+      "expected_articles": [
+        "Điều 41"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 127",
+        "Điều 97",
+        "Điều 17",
+        "Điều 41",
+        "Điều 99",
+        "Điều 99",
+        "Điều 126",
+        "Điều 27"
+      ],
+      "hit": true,
+      "latency_ms": 4.637300000467803
+    },
+    {
+      "id": "legacy-03",
+      "question": "lương thử việc có được thấp hơn lương chính không",
+      "expected_articles": [
+        "Điều 26"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 99",
+        "Điều 90",
+        "Điều 99",
+        "Điều 99",
+        "Điều 29",
+        "Điều 26",
+        "Điều 100",
+        "Điều 58"
+      ],
+      "hit": true,
+      "latency_ms": 4.581700000017008
+    },
+    {
+      "id": "legacy-04",
+      "question": "công ty có được giữ bằng cấp chứng chỉ của nhân viên không",
+      "expected_articles": [
+        "Điều 17"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 17",
+        "Điều 30",
+        "Điều 154",
+        "Điều 154",
+        "Điều 8",
+        "Điều 25",
+        "Điều 14",
+        "Điều 29"
+      ],
+      "hit": true,
+      "latency_ms": 5.273800000395568
+    },
+    {
+      "id": "legacy-05",
+      "question": "ký hợp đồng miệng có hợp lệ không",
+      "expected_articles": [
+        "Điều 14"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 51",
+        "Điều 55",
+        "Điều 56",
+        "Điều 58",
+        "Điều 61",
+        "Điều 20",
+        "Điều 188",
+        "Điều 54"
+      ],
+      "hit": false,
+      "latency_ms": 5.91919999988022
+    },
+    {
+      "id": "legacy-06",
+      "question": "làm 3 năm bị cho nghỉ việc thì nhận được tiền gì",
+      "expected_articles": [
+        "Điều 46"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 113",
+        "Điều 41",
+        "Điều 41",
+        "Điều 219",
+        "Điều 43",
+        "Điều 95",
+        "Điều 101",
+        "Điều 101"
+      ],
+      "hit": false,
+      "latency_ms": 10.401699999420089
+    },
+    {
+      "id": "legacy-07",
+      "question": "bao nhiêu ngày phải báo trước khi tự nghỉ việc",
+      "expected_articles": [
+        "Điều 35"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 40",
+        "Điều 162",
+        "Điều 38",
+        "Điều 41",
+        "Điều 36",
+        "Điều 33",
+        "Điều 29",
+        "Điều 139"
+      ],
+      "hit": false,
+      "latency_ms": 4.342299999734678
+    },
+    {
+      "id": "legacy-08",
+      "question": "đi làm muộn bị trừ lương có đúng luật không",
+      "expected_articles": [
+        "Điều 102"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 35",
+        "Điều 219",
+        "Điều 150",
+        "Điều 219",
+        "Điều 95",
+        "Điều 169",
+        "Điều 35",
+        "Điều 97"
+      ],
+      "hit": false,
+      "latency_ms": 4.7451999998884276
+    },
+    {
+      "id": "legacy-09",
+      "question": "công ty bắt làm thêm giờ mà không trả thêm tiền thì sao",
+      "expected_articles": [
+        "Điều 98"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 107",
+        "Điều 98",
+        "Điều 98",
+        "Điều 107",
+        "Điều 95",
+        "Điều 107",
+        "Điều 107",
+        "Điều 107"
+      ],
+      "hit": true,
+      "latency_ms": 5.435500000203319
+    },
+    {
+      "id": "legacy-10",
+      "question": "đang mang thai có bị sa thải được không",
+      "expected_articles": [
+        "Điều 137"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 137",
+        "Điều 37",
+        "Điều 139",
+        "Điều 35",
+        "Điều 137",
+        "Điều 122",
+        "Điều 137",
+        "Điều 30"
+      ],
+      "hit": true,
+      "latency_ms": 4.186199999821838
+    },
+    {
+      "id": "legacy-11",
+      "question": "thử việc xong công ty không nhận thì có được báo trước không",
+      "expected_articles": [
+        "Điều 27"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 27",
+        "Điều 27",
+        "Điều 41",
+        "Điều 24",
+        "Điều 34",
+        "Điều 38",
+        "Điều 24",
+        "Điều 70"
+      ],
+      "hit": true,
+      "latency_ms": 6.192100000589562
+    },
+    {
+      "id": "legacy-12",
+      "question": "nghỉ việc không báo trước thì mất gì",
+      "expected_articles": [
+        "Điều 40"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 41",
+        "Điều 36",
+        "Điều 47",
+        "Điều 35",
+        "Điều 36",
+        "Điều 27",
+        "Điều 33",
+        "Điều 216"
+      ],
+      "hit": false,
+      "latency_ms": 4.660300000068673
+    },
+    {
+      "id": "legacy-13",
+      "question": "làm ca đêm được thêm bao nhiêu phần trăm lương",
+      "expected_articles": [
+        "Điều 98"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 67",
+        "Điều 110",
+        "Điều 98",
+        "Điều 95",
+        "Điều 98",
+        "Điều 107",
+        "Điều 107",
+        "Điều 97"
+      ],
+      "hit": true,
+      "latency_ms": 4.5276999999259715
+    },
+    {
+      "id": "legacy-14",
+      "question": "mỗi năm được nghỉ phép mấy ngày",
+      "expected_articles": [
+        "Điều 113"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 114",
+        "Điều 137",
+        "Điều 113",
+        "Điều 113",
+        "Điều 169",
+        "Điều 111",
+        "Điều 113",
+        "Điều 101"
+      ],
+      "hit": true,
+      "latency_ms": 3.3542999999554013
+    },
+    {
+      "id": "legacy-15",
+      "question": "công ty nhỏ dưới 10 người có cần nội quy không",
+      "expected_articles": [
+        "Điều 118"
+      ],
+      "type": "informal",
+      "label_status": "legacy_unreviewed",
+      "retrieved_articles": [
+        "Điều 121",
+        "Điều 218",
+        "Điều 118",
+        "Điều 119",
+        "Điều 119",
+        "Điều 154",
+        "Điều 154",
+        "Điều 129"
+      ],
+      "hit": true,
+      "latency_ms": 4.8802000001160195
+    }
+  ],
+  "limitations": [
+    "Legacy article-level labels have not been independently reviewed.",
+    "Qdrant server unavailable; vector baseline pending."
+  ]
+}

@@ -1,0 +1,15 @@
+{"id": "legacy-01", "question": "nghỉ đẻ được mấy tháng", "expected_articles": ["Điều 139"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-02", "question": "bị đuổi việc oan thì được đền bao nhiêu tiền", "expected_articles": ["Điều 41"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-03", "question": "lương thử việc có được thấp hơn lương chính không", "expected_articles": ["Điều 26"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-04", "question": "công ty có được giữ bằng cấp chứng chỉ của nhân viên không", "expected_articles": ["Điều 17"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-05", "question": "ký hợp đồng miệng có hợp lệ không", "expected_articles": ["Điều 14"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-06", "question": "làm 3 năm bị cho nghỉ việc thì nhận được tiền gì", "expected_articles": ["Điều 46"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-07", "question": "bao nhiêu ngày phải báo trước khi tự nghỉ việc", "expected_articles": ["Điều 35"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-08", "question": "đi làm muộn bị trừ lương có đúng luật không", "expected_articles": ["Điều 102"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-09", "question": "công ty bắt làm thêm giờ mà không trả thêm tiền thì sao", "expected_articles": ["Điều 98"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-10", "question": "đang mang thai có bị sa thải được không", "expected_articles": ["Điều 137"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-11", "question": "thử việc xong công ty không nhận thì có được báo trước không", "expected_articles": ["Điều 27"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-12", "question": "nghỉ việc không báo trước thì mất gì", "expected_articles": ["Điều 40"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-13", "question": "làm ca đêm được thêm bao nhiêu phần trăm lương", "expected_articles": ["Điều 98"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-14", "question": "mỗi năm được nghỉ phép mấy ngày", "expected_articles": ["Điều 113"], "type": "informal", "label_status": "legacy_unreviewed"}
+{"id": "legacy-15", "question": "công ty nhỏ dưới 10 người có cần nội quy không", "expected_articles": ["Điều 118"], "type": "informal", "label_status": "legacy_unreviewed"}
