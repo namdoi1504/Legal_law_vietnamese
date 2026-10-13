@@ -9,3 +9,4 @@ __pycache__/
 .env
 check_chunk.py
 check_article.py
+PROGRESS.md

@@ -1,162 +1,145 @@
-# Legal RAG — tra cứu Bộ luật Lao động 2019
+# Legal RAG
 
-Ứng dụng hỏi đáp và đối chiếu hợp đồng với snapshot Bộ luật Lao động 2019. Câu trả lời được tạo từ nguồn truy xuất; mỗi nhận định phải có mã nguồn và đoạn trích kiểm chứng được.
+A Vietnamese legal assistant for question answering and employment contract review.
+The current corpus is a snapshot of Vietnam's Labor Code 2019: 220 articles.
 
-Phạm vi hiện tại là **220 điều trong snapshot đã thu thập**, không phải toàn bộ pháp luật lao động hiện hành. Hiệu lực sau các lần sửa đổi và các nghị định/thông tư liên quan chưa được xác minh đầy đủ.
+Answers include source references and verified verbatim quotations.
+Current amendments and legal validity have not been fully verified.
+Use this release for development and review; legal conclusions need human validation.
 
-## Kiến trúc
+## Architecture
 
 ```text
-HTML nguồn → parser điều/khoản/điểm → snapshot + manifest
-                                  ├─ BM25 tiếng Việt
-                                  └─ BGE-m3 → Qdrant
-
-Câu hỏi gốc + mở rộng thuật ngữ / rewrite
-  → BM25 + vector → RRF (40 ứng viên)
-  → BGE reranker (8 chunk, giữ được nhiều khoản cùng điều)
-  → mở rộng khoản cha trong ngân sách context
-  → LLM → kiểm tra JSON, source ID và trích dẫn nguyên văn
-  → câu trả lời / hỏi thêm / báo thiếu căn cứ
+Source HTML → article/clause/point parser → versioned index snapshot
+Question → original query + expansion/rewrite → BM25 + BGE-M3 → RRF
+         → BGE reranker → budgeted context → LLM → citation validation
+PDF/DOCX → contract sections → independent retrieval → section reports
 ```
 
-Parser giữ phần dẫn của khoản, nhận diện điểm `đ)` và tránh nhầm đánh số trong phần trích dẫn sửa đổi luật khác. Index mới được xây trong thư mục riêng; manifest chỉ được kích hoạt sau khi BM25 và Qdrant khớp dữ liệu. Bản cũ được giữ để có thể quay lại.
+Default retrieval uses 40 candidates and reranks the top 8 chunks.
+BM25 and Qdrant share a corpus manifest; previous snapshots support rollback.
 
-Rà soát PDF/DOCX truy xuất riêng theo từng phần/điều khoản, giữ vị trí trong văn bản trích xuất và nguồn luật. Báo cáo nêu rõ phần chưa xử lý nếu vượt giới hạn.
+## Requirements
 
-## Cài đặt
+- Python 3.11 or later.
+- A Groq API key and access to the configured model.
+- Internet access for dependency installation, initial model downloads, and Groq.
+- CPU is supported; embedding and reranking models are downloaded on first use.
 
-Tiếp tục công việc sau khi khởi động lại: đọc [PROGRESS.md](PROGRESS.md) trước. File ghi phần đã xong, phần đang chạy và lệnh thực hiện bước kế tiếp.
+Commands below use PowerShell and run from the repository root.
 
-Yêu cầu Python 3.11 trở lên. Các lệnh dưới đây chạy tại thư mục gốc repository.
+## 1. Install
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-
-# Chỉ tạo nếu chưa có .env; giữ nguyên API key đã cấu hình.
 if (-not (Test-Path .env)) { Copy-Item examble.env .env }
 ```
 
-Trên Linux/macOS, kích hoạt bằng `source .venv/bin/activate`.
+On Linux/macOS, activate with `source .venv/bin/activate`.
+Dependencies are pinned in `requirements-core.txt`; the project installs locally.
 
-Cấu hình tối thiểu trong `.env`:
+## 2. Configure
+
+Edit `.env` with your API key and model:
 
 ```dotenv
 LLM_PROVIDER=groq
 GROQ_API_KEY=your_api_key
 GROQ_MODEL=qwen/qwen3.8-27b
 QDRANT_MODE=local
+ACTIVE_INDEX_PATH=data/indexes/active.json
 MODEL_DEVICE=cpu
 ```
 
-Groq là cấu hình đã dùng trong đợt kiểm chứng. Có adapter Gemini và Ollama, nhưng chưa chạy đánh giá trực tiếp với hai provider này. Model Groq cũ `llama-3.3-70b-versatile` trả lỗi không khả dụng trong tài khoản lúc kiểm tra ngày 13/10/2026; `GROQ_MODEL` vẫn cấu hình được. Nếu `.env` cũ đã đặt model, cần cập nhật giá trị đó vì nó ghi đè mặc định trong mã.
+Existing `.env` values override code defaults. Keep API keys out of version control.
+Groq is the evaluated provider; Gemini and Ollama adapters have not been live-tested.
 
-`requirements-core.txt` chứa dependencies trực tiếp đã đối chiếu với môi trường chạy. `requirements.txt` cài các dependencies này và project local, không còn kéo một revision khác của chính repository từ GitHub.
+## 3. Build the Index
 
-## Chuẩn bị dữ liệu và index
-
-Nếu đã có `data/raw/labor_law_2019.html`, có thể bỏ qua bước crawl:
+Skip crawling if `data/raw/labor_law_2019.html` already exists.
+Skip building if a valid `data/indexes/active.json` and its artifacts already exist.
 
 ```powershell
 python -m scripts.crawl
 python -m scripts.build_index
 ```
 
-Lần đầu tải model và tạo embedding có thể mất vài phút, tùy mạng và phần cứng. Có cache embedding cho cùng nội dung/model. Nếu các model đã được cache và muốn chạy offline:
+The build validates chunks, creates BM25 and vector indexes, then activates a manifest.
+Artifacts are stored under `data/indexes/<snapshot>/`; embeddings are cached.
+Initial embedding can take several minutes on CPU.
+Local Qdrant requires no Docker container or separate server.
+
+For cached models, set `HF_HUB_OFFLINE=1` and `TRANSFORMERS_OFFLINE=1` before building.
+
+## 4. Run
+
+Activate the virtual environment in both terminals.
 
 ```powershell
-$env:HF_HUB_OFFLINE="1"
-$env:TRANSFORMERS_OFFLINE="1"
-python -m scripts.build_index
-```
-
-Đầu ra:
-
-- `data/indexes/<snapshot>/chunks.json`, `bm25.pkl`, `qdrant/`, `manifest.json`.
-- `data/indexes/active.json`: manifest đang được ứng dụng sử dụng.
-- Manifest ghi hash nguồn, corpus, artifact, model và kết quả kiểm tra.
-
-Mặc định Qdrant chạy **embedded local**, không cần Docker/server. Chạy API với **một worker** vì local Qdrant khóa thư mục dữ liệu. Benchmark dùng bản index trong bộ nhớ nên có thể chạy mà không mở thêm khóa của ứng dụng.
-
-Nếu dùng Qdrant server, đặt `QDRANT_MODE=server`, `QDRANT_HOST`, `QDRANT_PORT`, khởi động server rồi xây index mới. Chế độ server có mã hỗ trợ nhưng chưa kiểm thử tải thực trong đợt này.
-
-Lệnh phụ:
-
-```powershell
-# Chỉ xem JSON parser, không đổi index đang chạy
-python -m scripts.parse
-
-# Xây snapshot BM25 để thử nghiệm, không kích hoạt
-python -m scripts.build_index --lexical-only --no-activate
-
-# Quay lại snapshot đã có: dừng API trước nếu dùng local Qdrant
-python -m scripts.activate_index data/indexes/<snapshot>/manifest.json
-```
-
-Khởi động lại API sau khi kích hoạt snapshot khác. Tiến trình đang chạy giữ index đã nạp lúc khởi động.
-
-## Chạy ứng dụng
-
-```powershell
-# Terminal 1
+# Terminal 1: API
 uvicorn app.main:app --host 127.0.0.1 --port 8000
 
-# Terminal 2
+# Terminal 2: UI
 streamlit run frontend/app.py
 ```
 
-Frontend gọi backend, vì vậy cần chạy cả hai. API docs: [Swagger UI](http://localhost:8000/docs).
+Open the UI at [localhost:8501](http://localhost:8501).
+API documentation is available at [localhost:8000/docs](http://localhost:8000/docs).
+Use one API worker with local Qdrant because its storage directory is locked.
+CPU responses can take tens of seconds.
 
-| Endpoint | Chức năng |
+## API
+
+| Endpoint | Purpose |
 |---|---|
-| `POST /chat` | Hỏi đáp, trả `answer`, `status`, `claims`, `citations`, `sources`, `scope`, `latency_ms` |
-| `POST /analyze-document` | PDF có text hoặc DOCX; trả kết quả theo từng phần và số phần chưa xử lý |
-| `GET /health` | Kiểm tra tiến trình hoạt động |
-| `GET /ready` | Kiểm tra index; không gọi API LLM có tính phí |
+| `GET /health` | Process liveness |
+| `GET /ready` | Index readiness; does not call the LLM |
+| `POST /chat` | Question answering with claims, citations, sources, and status |
+| `POST /analyze-document` | Multipart PDF/DOCX review with section-level results |
 
-`/chat` nhận `query`, tùy chọn `domain`, `document_version`, `as_of_date` (`YYYY-MM-DD`). Filter ngày chỉ chấp nhận dữ liệu đã xác minh hiệu lực; snapshot hiện chưa có nhãn hiệu lực đã xác minh nên yêu cầu lọc ngày sẽ không trả căn cứ.
+`/chat` accepts `query` and optional `domain`, `document_version`, `as_of_date`.
+Date filtering requires verified validity metadata, which the current snapshot lacks.
+Document review accepts up to 3 files, 10 MiB each, and an optional `question`.
+Scanned PDFs require OCR first; convert legacy `.doc` files to `.docx`.
+Unprocessed sections are reported when processing limits or provider failures occur.
 
-Các trạng thái: `answered`, `partial`, `needs_information`, `insufficient_evidence`, `validation_failed`. Lỗi provider được API trả HTTP 503; hết quota trả HTTP 429 kèm `Retry-After`. Citation hợp lệ chứng minh đoạn trích tồn tại trong context; **chưa tự chứng minh mọi diễn giải pháp lý đều đúng**.
+## Tests and Evaluation
 
-## Kiểm thử và đánh giá
-
-Kiểm thử hồi quy không gọi API LLM và không tải model:
+Offline regression tests do not call a paid LLM API or download models:
 
 ```powershell
 python -m unittest discover -s tests -v
+python -m src.evaluation.benchmark --mode bm25 --dataset data/evaluation/dev.jsonl --output reports/evaluation/dev_bm25.json
 ```
 
-Benchmark mặc định chỉ chạy BM25, không dùng API:
+End-to-end evaluation calls the configured LLM and consumes API quota:
 
 ```powershell
-python -m src.evaluation.benchmark --mode bm25 --dataset data/evaluation/dev.jsonl --output reports/evaluation/dev_bm25.json
-python -m src.evaluation.benchmark --mode vector --dataset data/evaluation/dev.jsonl --output reports/evaluation/dev_vector.json
-python -m src.evaluation.benchmark --mode hybrid --dataset data/evaluation/dev.jsonl --output reports/evaluation/dev_hybrid.json
-
-# Có gọi API và tiêu thụ quota của provider
-python -m src.evaluation.benchmark --mode pipeline --dataset data/evaluation/test.jsonl --limit 35 --output reports/evaluation/test_pipeline.json
-
-# Tiếp tục báo cáo đã có, chỉ chạy lại câu lỗi; tránh chạy API song song
-python -m src.evaluation.benchmark --mode pipeline --dataset data/evaluation/test.jsonl --limit 35 --output reports/evaluation/test_pipeline.json --resume --retry-errors --min-interval 60
-
-# So sánh BM25/vector và recall của pool RRF 20/40, không gọi LLM
-python -m scripts.retrieval_ablation
+python -m src.evaluation.benchmark --mode pipeline --dataset data/evaluation/test.jsonl --limit 35 --output reports/evaluation/test_pipeline.json --min-interval 60
 ```
 
-Dataset gồm 15 câu hồi quy, 107 câu phát triển, 35 câu giữ riêng theo điều luật và 12 ca biên. Nhãn kế thừa chưa được chuyên gia pháp lý kiểm định; xem [hướng dẫn dataset](data/evaluation/README.md). Các câu đã dùng để điều chỉnh không được xem là bằng chứng tổng quát hóa độc lập.
+Add `--resume --retry-errors` to continue that report and retry failed cases.
+Run API benchmarks sequentially. Reports retain per-case results, errors, and timings.
+Retrieval hit rate measures source coverage; it does not measure answer correctness.
+Dataset labels and semantic citation support still require expert review.
 
-Báo cáo JSON lưu dataset/corpus hash, model/cấu hình, kết quả từng câu, context, câu trả lời, lỗi và độ trễ. Có Hit Rate, Recall, MRR/nDCG; trường rà soát ngữ nghĩa để trống cho đến khi được chấm. Xem [báo cáo triển khai](reports/IMPLEMENTATION_REPORT.md) để biết số đo và hạn chế của bản hiện tại.
+## Troubleshooting and Maintenance
 
-Số **96,7% trên 30 câu** trong README cũ là kết quả lịch sử chưa tái lập. Không sử dụng số đó như độ chính xác câu trả lời hiện tại.
+- Missing index: run `python -m scripts.build_index` before starting the API.
+- Qdrant lock error: stop other processes using the same local snapshot.
+- HTTP 429: wait for `Retry-After`; avoid concurrent API benchmark runs.
+- HTTP 503: check provider credentials/model access and backend logs.
+- Unsupported PDF: provide a text-based PDF or run OCR before uploading.
 
-## Các giới hạn vận hành
+To roll back, stop the API and activate an existing snapshot:
 
-- Reranking bằng BGE trên CPU là bước tốn thời gian nhất; các câu đã đo thường mất hàng chục giây. Điều chỉnh `MODEL_DEVICE` theo phần cứng trước khi tăng concurrency.
-- Mặc định: query tối đa 3.000 ký tự; tối đa 3 file, 10 MiB/file, tổng 150.000 ký tự trích xuất và 30 phần/lượt. Phần vượt giới hạn được báo rõ.
-- `.doc` cần chuyển sang `.docx`; PDF scan cần OCR trước. DOCX có bảng được đọc theo thứ tự nội dung.
-- Giới hạn context sử dụng số byte UTF-8 làm ước lượng bảo thủ để tránh cắt ngang căn cứ; có thể chưa tận dụng hết cửa sổ model.
-- Ngưỡng reranker là raw logit, không phải xác suất câu trả lời đúng. Ngưỡng hiện tại còn cần hiệu chỉnh trên nhiều câu ngoài phạm vi hơn.
-- Không xác nhận hợp đồng “hoàn toàn hợp pháp” chỉ vì không tìm thấy vi phạm trong corpus hiện có.
+```powershell
+python -m scripts.activate_index data/indexes/<snapshot>/manifest.json
+```
 
-Các bước tiếp theo, tiêu chí nghiệm thu và phần còn cần chuyên môn pháp lý được ghi trong [ROADMAP.md](ROADMAP.md).
+Restart the API after switching snapshots.
+Read [PROGRESS.md](PROGRESS.md) to resume development from the latest checkpoint.
+See [ROADMAP.md](ROADMAP.md) for remaining work and acceptance criteria.
+See [the implementation report](reports/IMPLEMENTATION_REPORT.md) for measured results.
