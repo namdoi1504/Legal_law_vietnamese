@@ -1,4 +1,3 @@
-# frontend/app.py
 import streamlit as st
 import httpx
 
@@ -12,7 +11,6 @@ st.caption(
 
 tab1, tab2 = st.tabs(["💬 Hỏi đáp pháp luật", "📄 Kiểm tra văn bản / Hợp đồng"])
 
-# ── Tab 1: Chat thường ──────────────────────────────────────
 with tab1:
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -75,7 +73,6 @@ with tab1:
                 except Exception as e:
                     st.error(f"Lỗi kết nối: {e}")
 
-# ── Tab 2: Kiểm tra văn bản ─────────────────────────────────
 with tab2:
     st.subheader("📄 Kiểm tra hợp đồng / văn bản pháp lý")
     st.caption(

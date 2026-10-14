@@ -7,7 +7,6 @@ from src.pipeline.prompts import QUERY_REWRITE_PROMPT
 
 logger = logging.getLogger(__name__)
 
-# Từ khóa pháp lý — nếu query đã có các từ này thì KHÔNG cần rewrite
 LEGAL_KEYWORDS = {
     "điều",
     "khoản",
@@ -40,8 +39,7 @@ LEGAL_KEYWORDS = {
     "vô hiệu",
     "hiệu lực",
 }
-
-# Độ dài tối thiểu để xét rewrite — câu quá ngắn (< 5 từ) không đủ ngữ cảnh
+# độ dài tối thiểu đề xuất
 MIN_WORDS_FOR_REWRITE = 3
 
 
@@ -97,12 +95,10 @@ class QueryRewriter:
         if expanded != query:
             return expanded, True
 
-        # Skip nếu query đã dùng thuật ngữ pháp lý
         if self._is_formal_query(query):
             logger.debug('Query rewrite skipped: formal')
             return query, False
 
-        # Skip nếu query quá ngắn
         if len(query.split()) < MIN_WORDS_FOR_REWRITE:
             logger.debug('Query rewrite skipped: short')
             return query, False
@@ -115,7 +111,6 @@ class QueryRewriter:
             )
             rewritten = rewritten.strip()
 
-            # Sanity check: nếu rewritten rỗng hoặc quá khác (> 5x độ dài), fallback
             if not rewritten or len(rewritten) > len(query) * 5:
                 logger.warning(
                     "Rewrite rejected by length validation; using original query"
@@ -136,7 +131,6 @@ class QueryRewriter:
             return rewritten, True
 
         except Exception as e:
-            # Fallback an toàn — pipeline không bị crash
             logger.warning(
                 "Rewrite unavailable (%s); using original query", type(e).__name__
             )

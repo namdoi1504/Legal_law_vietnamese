@@ -1,5 +1,3 @@
-"""Build bounded, auditable context without cutting a provision mid-sentence."""
-
 import json
 
 
